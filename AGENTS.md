@@ -18,23 +18,30 @@ internen Ueberlegungen im Code oder in Kommentaren.
 Der Code stammt aus einem frueheren eigenen Projekt der Gruender (privates
 Repo, hier bewusst nicht verlinkt): die
 Gestaltungssprache, die Navigationsleiste, die Fusszeile, der Hell-Dunkel-Schalter
-und das Seitenraster. **Nicht übernommen** wurden Anmeldung/Konten, die
-`/backdoor`-Oberfläche, der Globus und die Uhr (die brauchten Besucher-Standort
-per IP), sowie sämtliche personenbezogenen Daten.
+und das Seitenraster, dazu Globus und Uhr. **Nicht übernommen** wurden
+Anmeldung/Konten, die `/backdoor`-Oberfläche und sämtliche personenbezogenen
+Daten.
+
+**Der Globus liest den Besucher-Standort.** `utils/visitor-geo.ts` holt das
+LAND des Besuchers aus Vercels Edge-Headern — pro Anfrage, nichts gespeichert,
+kein Cookie, nie auf Stadt-Ebene. Das macht die Startseite dynamisch (`ƒ` statt
+statisch) und **muss in der Datenschutzerklärung stehen**: der Abschnitt
+`globe-location` ist dort angelegt und noch leer. Wer den Globus entfernt,
+entfernt auch den Abschnitt — und umgekehrt.
 
 **Alle Texte sind noch leer.** Jede offene Stelle trägt einen sichtbaren Marker.
 Vor jedem Livegang muss `grep -rn "<Placeholder" app` leer zurückkommen.
 
 **Offene Punkte vor dem Livegang:** Impressum und Datenschutz ausfüllen (§ 5 DDG
 verlangt einen echten Anbieter mit Postanschrift), Postfach `kontakt@raban.ai`
-einrichten, eigenes Favicon (das uebernommene Zeichen gehoerte zum Vorprojekt
-und wurde entfernt).
+einrichten, Abschnitt `globe-location` in der Datenschutzerklärung schreiben.
+Das Favicon ist bewusst dasselbe Zeichen wie im Vorprojekt.
 
 ## Gestaltungssprache
 
 Der folgende Abschnitt ist unveraendert aus dem Vorprojekt uebernommen und beschreibt
-den Code in `app/`. Wo er Dinge nennt, die es hier nicht mehr gibt (Globus,
-Backdoor, Interviews, `app/backdoor/people.tsx` als Referenz für Karten), sind
+den Code in `app/`. Wo er Dinge nennt, die es hier nicht gibt (Backdoor,
+Interviews, `app/backdoor/people.tsx` als Referenz für Karten), sind
 das Verweise auf das Quellprojekt — die Regel dahinter gilt weiter, das Beispiel
 existiert hier nicht.
 

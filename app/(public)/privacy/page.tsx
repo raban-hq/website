@@ -7,12 +7,16 @@ import { SectionIndex, type Section } from "../../components/section-index";
 // EVERY BODY IS A PLACEHOLDER. A privacy policy has to describe what THIS site
 // actually does — nothing here is carried over from another site, because a
 // policy that describes someone else's data handling is worse than none.
-// Sections that only existed for the other site's features (account login,
-// homepage globe, AI voice interviews) are deliberately not here; add sections
-// as the site grows features that need them.
+// Sections that only existed for the other site's features (account login, AI
+// voice interviews) are deliberately not here; add sections as the site grows
+// features that need them. The globe IS here — this site has one.
 const SECTIONS: (Section & { body: React.ReactNode })[] = [
   { id: "controller", title: "Controller", body: <Placeholder>who is responsible for the data, with a postal address</Placeholder> },
   { id: "what-we-process", title: "What we process and why", body: <Placeholder>what this site collects, and the legal basis for each</Placeholder> },
+  // The home page resolves the visitor's COUNTRY from Vercel's edge geo headers
+  // to point the globe (utils/visitor-geo.ts): per request, never stored, no
+  // cookie. It still has to be declared here.
+  { id: "globe-location", title: "Location of the homepage globe", body: <Placeholder>that the globe resolves the visitor's country from their IP at the edge, per request and unstored</Placeholder> },
   { id: "server-logs", title: "Server logs", body: <Placeholder>what the host logs, and how long it is kept</Placeholder> },
   { id: "cookies", title: "Cookies", body: <Placeholder>which cookies are set, if any</Placeholder> },
   { id: "recipients", title: "Recipients and processors", body: <Placeholder>every processor with access, hosting included</Placeholder> },

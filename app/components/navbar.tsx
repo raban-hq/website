@@ -14,6 +14,11 @@ const NAV_LINKS: [string, string][] = [
   ["/contact", "Contact"],
 ];
 
+// Routes that render the globe and listen for "raban-refresh" to re-run it.
+// Only the home page for now — the other project also ran it on /about, which
+// here is an ordinary page.
+const GLOBE_PAGES = new Set(["/"]);
+
 // Breadcrumb labels: the nav links plus the routes that only appear in a path.
 const CRUMBS: Record<string, string> = {
   ...Object.fromEntries(NAV_LINKS),
@@ -81,6 +86,9 @@ export function Navbar() {
     if (href === pathname) {
       e.preventDefault();
       window.scrollTo(0, 0);
+      if (GLOBE_PAGES.has(pathname)) {
+        window.dispatchEvent(new Event("raban-refresh"));
+      }
     }
   };
 
