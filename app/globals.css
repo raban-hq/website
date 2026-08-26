@@ -1,0 +1,298 @@
+@import "tailwindcss";
+
+:root {
+  /* Every dimension below is a multiple of 8px — one grid for the whole app,
+     so the chrome, the page gutter and the vertical rhythm all land on the
+     same beats instead of each carrying its own arbitrary number. The single
+     exception is --radius (and the --gutter that follows it), which is pinned
+     to half the bar height instead; see the note there. */
+  /* The chrome bar (navbar and footer share it): 56px = 7 grid units. Still
+     slim on purpose — the bars are a frame around the page, not furniture. */
+  --nav-h: 56px;
+  /* Corner radius of the chrome (the navbar rounds its bottom, and so does
+     the page card hanging below it; the footer slab behind it is square).
+     Exactly HALF the bar height, so the curve resolves precisely at the bar's
+     midline and the ends read as one clean arc. Going past half (a 32px curve
+     on a 48px bar) leaves too little straight edge and the ends bulge; change
+     --nav-h and this must follow it. The one dimension that is NOT a multiple
+     of 8 — half of a 7-unit bar lands on 28px, and the half-height rule wins
+     over the grid here because the arc is what the eye reads. */
+  --radius: 28px;
+  /* Horizontal page gutter so text never touches the screen edge. Also drives
+     the navbar/footer inset, so content stays aligned to this single rhythm.
+     Held equal to the corner radius so the first character starts exactly
+     where the corner curve straightens out — at a smaller inset the label
+     reads as sitting inside the bend. */
+  --gutter: var(--radius);
+  /* Breathing room between the navbar and the start of content — and, mirrored,
+     between the end of content and the footer. Non-home content pages open with
+     pt-[var(--content-top)] and close with pb-[var(--content-gap)] so the top
+     and bottom gaps match. 40px = 5 units. */
+  --content-gap: 40px;
+  /* Where page content starts below the sticky navbar — default for all pages.
+     nav height clears the bar; --content-gap is the breathing room under it.
+     Resolves to 96px (12 units). */
+  --content-top: calc(var(--nav-h) + var(--content-gap));
+  /* Gap between a page heading and the first line of content below it, and the
+     ceiling for spacing between top-level sections. Equal to the gutter: the
+     same beat horizontally and vertically. */
+  --header-gap: var(--gutter);
+  /* The home tagline sits lower than the default for a more spacious hero.
+     104px = 13 units below the bar (160px from the top). */
+  --tagline-top: calc(var(--nav-h) + 104px);
+  /* The navbar is lifted off the page by a soft shadow, as if the light sits
+     directly overhead. It reaches well down the page — a long, wide, very faint
+     cast rather than a tight band hugging the bar, which would read as a hard
+     opaque object sitting flat on the paper. Glass scatters what little light
+     it blocks, so the ink stays low even as the throw gets long — real glass
+     casts a hint, not a silhouette. It is one of the app's two
+     drop shadows — the other is --page-cast just below, where the page card
+     meets the slab. Those two edges are the whole list: cards and content
+     otherwise stay flat (see AGENTS.md).
+     The geometry is the same in both themes and only the ink changes: dark paper
+     swallows a 3% shadow completely, so the dark arm carries far more alpha to
+     cast the same visible amount. Still black in BOTH arms — the navbar always
+     casts on paper, and a shadow is absence of light in either theme; it is the
+     polish below, not the shadow, that inverts. Don't put a light arm here. */
+  --lift: 0 8px 20px light-dark(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.55));
+  /* The page card's bottom edge, in two halves that are ONE effect: the lip on
+     the paper (--page-lip) and the cast onto the slab (--page-cast). They only
+     read as depth together and must be tuned together — the split is forced by
+     WHERE each has to be painted, not by them being separate ideas.
+     They live on different elements on purpose. The lip is an inset, so it goes
+     on the card. The cast used to as well, and that turned out to be the bug:
+     the globe animates on a transform, so while it runs the card holds a live
+     composited layer, and the card's own outset shadow is re-rasterized along
+     with it — an element's own box-shadow is the one thing its overflow can
+     never clip, so a square silhouette flashed through the corner notches at
+     the end of the animation. The cast is now thrown by a static, empty element
+     that sits above the footer (see app/(public)/layout.tsx), with the same
+     width and the same bottom radius, so the silhouette is identical and
+     nothing that animates is anywhere near it.
+     The cast is a GLOW, not a shadow. The slab is the ink, so in light the card
+     is white paper over BLACK and a black shadow there is invisible by
+     definition. What actually happens at that edge is the paper catching the
+     light and spilling a little of it onto the slab below — so the cast carries
+     the PAPER's colour and inverts with the theme the way --edge-polish does
+     (dark: a near-black card over a white slab, so the spill turns back into an
+     ordinary dark shadow). The lip inverts with it, and for the same reason.
+     Both are DELIBERATELY not faint. Unlike --lift, which shades white paper
+     and can afford 3% ink, this lands on the full-contrast slab and has to
+     carry a real boundary — two quiet versions (12–14px blur, ~0.2 alpha) were
+     built first and were invisible on a bright screen. The alphas are tuned per
+     ARM rather than shared: white spilling onto black and black falling onto
+     white do not read the same at the same number.
+     On the WIDTH, and a correction. Four earlier attempts at a cast here were
+     built and dropped (0 8px 20px, then spread equal to blur, then a four-layer
+     stack, then a gradient strip), and the note left behind said a wide blur
+     always thins at the screen edges — a viewport-wide silhouette has nothing
+     beyond the edge to blur in from — so keep the blur under --radius. That is
+     over-cautious, and this disproves it: 40px of blur, well past the 28px
+     radius, and the run is even end to end at 400px and at 1280px. Two things
+     buy that. The -10px SPREAD pulls the shadow rect in from the screen edges,
+     so the blur has margin to sample before it reaches the visible end; and the
+     20px OFFSET puts the throw well below the corner, where it is the bottom
+     edge casting, not the arc. Keep the negative spread if you widen it
+     further, and check both ends — that part of the old note was real.
+     Note the spread also shrinks the caster, so the element throwing the cast
+     must stay taller than 2*(radius) or the corner radius scales down with it
+     and the glow's corner stops matching the paper's. */
+  --page-lip: inset 0 -5px 9px -5px light-dark(rgba(0, 0, 0, 0.13), rgba(255, 255, 255, 0.13));
+  --page-cast:
+    0 4px 10px 0 light-dark(rgba(255, 255, 255, 0.22), rgba(0, 0, 0, 0.28)),
+    0 20px 40px -10px light-dark(rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0.60));
+  /* The navbar's bottom edge, polished. An INSET shadow, so unlike a gradient
+     border it follows the corner radius instead of flattening it: the ink is
+     densest at the very bottom and fades upward over ~3px, so the edge reads as
+     a rounded lip someone sanded over rather than a flat band. There is no
+     hairline under it — this gradient IS the whole edge (see AGENTS.md).
+     This one INVERTS with the theme, where the lift doesn't: the lip is the bar's
+     own edge catching the difference between itself and the page, so on white
+     paper it grades ink downward and on dark paper it grades light. A black lip
+     on a dark bar is invisible; a white one reads as the same sanded edge.
+     The arms are deliberately NOT the same number, and an earlier note here that
+     said to keep them equal had it backwards: equal alpha does not buy equal
+     visibility. The lip is graded against the bar's own surface, and near-black
+     paper swallows a white grade far more readily than white paper swallows a
+     black one, so at a matched 9-10% the dark edge simply read fainter than the
+     light one. 20% is where the two carry the same weight — checked side by side
+     at 6x zoom, which is the only way to see this; at 1:1 the difference between
+     a sanded edge and a drawn line is a pixel. The old warning still applies
+     from roughly 26% up, where the grade does collapse into a line. */
+  --edge-polish: inset 0 -3px 5px -3px light-dark(rgba(0, 0, 0, 0.09), rgba(255, 255, 255, 0.20));
+  /* Type scale above body text. Page headings are display type, so they take a
+     TIGHTENED line box: mono at 48px on the body's 1.6 leading reads as two
+     loose lines rather than one heading. Both numbers stay on the 8px grid, so
+     a heading occupies whole grid units like everything else.
+     --h1 steps down on phones (see the media query below): a monospaced face is
+     far wider per character than the proportional faces this scale was drawn
+     against, so a title that sits on one line at desktop breaks into three on a
+     375px screen; --h2 steps down with it for the same reason. Note --h2-line
+     does NOT change across the step — only the glyph size does, so a section
+     heading occupies the same 32px line box at either size and the vertical
+     rhythm of a document doesn't shift under the breakpoint.
+     Every heading in the app reads these, so a change to the scale is one edit. */
+  --h1: 32px;
+  --h1-line: 40px;
+  --h2: 20px;
+  --h2-line: 32px;
+  /* Where the section index sits — and stays. Its natural position is the top
+     of the grid row the body text starts in: clear the navbar gap, the h1's
+     line box, and the gap under it. Used as the index's sticky `top` as well,
+     which is the point: a sticky top that DIFFERS from where the element
+     already sits makes it slide to that other resting place the moment you
+     scroll (it used to travel 80px up the page). Setting the two equal pins it
+     where it starts, so it doesn't move at all.
+     Follows --h1-line, so it stays put if the heading scale changes. It does
+     assume the index is the item the grid's baseline alignment leaves at the
+     row's top edge — true while its entries carry more padding above their
+     first line than the prose does. */
+  --index-top: calc(var(--content-top) + var(--h1-line) + var(--header-gap));
+  /* The reading measure for long documents (/privacy, /legal): 672px = 84 units,
+     about 70 characters of mono. The document sits in the MIDDLE track of a
+     three-track grid so it's centred in the viewport, with the index out in the
+     left margin — centring a flex row of index+document instead would centre
+     the pair and leave the prose sitting left of centre. That grid is also what
+     sets the breakpoint the index appears at: the outer tracks are
+     (100vw - 2*gutter - measure) / 2 wide, which first covers the index's own
+     256px at 1240px of viewport, so `xl` (1280px) is the first standard
+     breakpoint that clears it — with 20px to spare. Below it there
+     is genuinely no margin to put an index in. */
+  --measure: 672px;
+  /* ── Colour. Two themes, one set of tokens ──────────────────────────────────
+     Every colour in the app is one of the tokens below, and each is
+     declared ONCE as `light-dark(light, dark)` — the browser picks the arm from
+     the `color-scheme` on the line below, which follows the device until a
+     [data-theme] pin overrides it (see the bottom of this block). So there is no
+     second copy of the palette under a media query to drift from: adding a
+     colour is one line, and it is automatically right in both themes.
+     `color-scheme` is also what tells the browser to render its OWN surfaces —
+     scrollbars, form controls, the native focus ring — in the same theme, which
+     no amount of CSS on our side can do.
+     Dark is a genuine INVERSION of the flat-paper language, not a dimming of it:
+     dark paper, full-strength light ink, the same hairlines at the same alphas.
+     Everything else in the design language — one distinction, no colour, flat,
+     full ink — carries over untouched. */
+  color-scheme: light dark;
+  /* Paper background — base of the flat-paper design language. Achromatic: no
+     hue anywhere (the one exception is the destructive red in /backdoor). Dark
+     paper is near-black rather than #000: paper, not a void — and it leaves
+     pure black free as the one step deeper (see --slab). */
+  --paper: light-dark(#fff, #0d0d0d);
+  /* Resting ink — ALWAYS full strength, in either theme (de-emphasis comes from
+     size/weight/spacing, never tone; see AGENTS.md). Dark ink is #f2f2f2 rather
+     than pure white: at 100% white on near-black, mono text at 16px halates and
+     the page reads as glowing rather than printed. It is still "full ink" — the
+     token IS the resting colour, and nothing rests below it. */
+  --ink: light-dark(#000, #f2f2f2);
+  /* The footer slab — the one surface that is not paper. It is the page
+     INVERTED, literally: the slab is the ink and its ink is the paper, so the
+     block flips with the theme and stays the full-contrast counterweight it is
+     in light. On dark that means a white footer under a dark page — loud, and
+     meant to be: the footer's whole job is to end the page with a block that is
+     emphatically not it, and a near-black slab on near-black paper is a slab you
+     can't see. Defined off the two tokens above rather than restated, so the
+     inversion can't drift from them; `tone="light"` in LinkStyle means "on the
+     slab", not "light-coloured" (see app/components/link-style.tsx). */
+  --slab: var(--ink);
+  --slab-ink: var(--paper);
+  /* The veil behind a modal (app/components/emergent.tsx). The one colour that
+     does NOT invert: a veil absorbs light in either theme — one that brightened
+     the page behind a dialog would read as a light leak, not a scrim. Only the
+     amount changes, because 10% black over dark paper absorbs nothing visible. */
+  --veil: light-dark(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.45));
+  /* The globe's centre-to-limb depth grade (app/components/globe-map.tsx),
+     as four stops: the country strokes and, fainter, the sphere + graticule.
+     Each dark stop keeps its light counterpart's exact DISTANCE from the paper
+     (#c5c5c5 sits 58 below white, so its dark arm sits 58 above #0d0d0d), so
+     the globe dissolves into the page at the same rate in either theme. */
+  --globe-near: light-dark(#c5c5c5, #474747);
+  --globe-far: light-dark(#ededed, #1f1f1f);
+  --globe-faint-near: light-dark(#dedede, #2f2f2f);
+  --globe-faint-far: light-dark(#f4f4f4, #181818);
+  /* The globe marker and its typed label: a mid grey that holds its own against
+     either paper, so it needs no second arm. */
+  --globe-marker: #737373;
+}
+
+/* Tailwind sees the palette through these four utility colours, so the whole
+   app is written in `text-ink` / `bg-paper` / `border-ink/10` / `bg-slab` and
+   nothing anywhere says black or white. `@theme inline` is what makes that work:
+   it emits `var(--ink)` into every utility rather than copying today's value in,
+   so a utility re-resolves the moment the theme flips. Opacity modifiers
+   (`border-ink/10`) still work — Tailwind wraps the var in a color-mix. */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-slab: var(--slab);
+  --color-slab-ink: var(--slab-ink);
+}
+
+/* The manual override, and the whole of it: pinning `color-scheme` re-picks
+   every light-dark() arm above in one go. No [data-theme] attribute means no
+   override, which is the default — the device decides, and keeps deciding
+   (flip your Mac to dark at sunset and the page follows, live). The attribute
+   is written by ThemeFlip in the footer, and re-applied before first paint by
+   the inline script in app/layout.tsx so a dark-mode visitor never sees a white
+   flash. Flipping to whatever the device already says REMOVES the attribute
+   rather than pinning it, so you fall back into following the device. */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+/* The `dark:` variant, redefined so it means "dark is what's on screen" —
+   system preference OR the manual pin, the same pair the tokens resolve
+   against. Tailwind's stock `dark:` is the media query alone, which would ignore
+   the footer flip. Almost nothing needs it: the tokens carry the theme by
+   themselves, and a utility that has to name a theme is usually a token that
+   should have existed. The exception it exists for is what isn't a colour at
+   all — the theme flip's knob, which sits at one end of its capsule on light and
+   the other on dark, and the pair of screen-reader labels that swap with it. */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) & { @slot; }
+  }
+  :root[data-theme="dark"] & { @slot; }
+}
+
+/* The one breakpoint in the type scale. Below it a 48px mono title is simply
+   too wide for the screen; above it, it's the page's anchor. */
+@media (min-width: 640px) {
+  :root {
+    --h1: 48px;
+    --h1-line: 56px;
+    --h2: 24px;
+  }
+}
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  /* System monospace stack (no web font), à la ssi.inc — SF Mono on Mac. */
+  font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+  /* Contain horizontal overflow (e.g. the home globe). Must sit on html, not
+     just body: on iOS Safari the viewport scroll lives on the root element, so
+     clipping body alone paints-clips but still lets the page scroll sideways —
+     only an html clip stops it. Use clip, not hidden: clip contains the overflow
+     without creating a scroll container, so it doesn't relocate the page scroll.
+     (This overflow clip is NOT related to the sticky-navbar drift — moving it off
+     the root was tried and changed nothing. That drift is a sticky+backdrop-filter
+     compositing issue on iOS, suspected to be an iOS 27 dev-beta regression tied to
+     the address-bar resize; see app/components/navbar.tsx. Do not work around it by
+     dropping the frost/bounce or adding a transform — both make it worse.) */
+  overflow-x: clip;
+  /* Comfortable reading rhythm for all text: airy line-height, with the mono's
+     own even spacing left at its natural width (no extra tracking). */
+  line-height: 1.6;
+  letter-spacing: 0;
+  /* Uniform medium weight for all text across the app. */
+  font-weight: 500;
+}
+
+/* Default body text size is 16px. Set on body only (not html) so the rem-based
+   Tailwind text-* utilities stay anchored to the 16px root; navbar and body copy
+   sit at 16, the footer and the section index step down to 12, and headings come
+   off the --h1/--h2 vars above. */
+body {
+  font-size: 16px;
+}
