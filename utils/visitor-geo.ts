@@ -1,7 +1,7 @@
 // Visitor location for the globe, read from Vercel's edge geo headers.
 //
 // The globe shows the COUNTRY, never the city: city-level IP geolocation is
-// routinely off by a whole region (a Frankfurt exit node for a Heidelberg
+// routinely off by a whole region (a Frankfurt exit node for a Stuttgart
 // visitor), and a wrong city name is the one thing a reader can check. So the
 // marker sits on the country's own centre (utils/country-centroids.ts, derived
 // from the same shapes the globe draws) rather than on the IP's coordinates —
