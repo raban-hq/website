@@ -16,7 +16,7 @@ export default async function HomePage() {
       <div className="absolute inset-x-[var(--gutter)] top-[var(--tagline-top)] z-10">
         {/* Lede: narrow so it stacks into a tight block — 45vw phone, 35 tablet, 25 computer. */}
         <p className="max-w-[45vw] text-[1.75rem] font-semibold leading-[1.15] md:max-w-[35vw] lg:max-w-[25vw]">
-          keeps knowledge inside the company when the experts who carry it leave.
+          Keeps knowledge inside the company when the experts who carry it leave.
         </p>
         {/* Supporting deck: wider for reading — 75vw phone, 65 tablet, 55 computer. */}
         <p className="mt-6 max-w-[75vw] text-base md:max-w-[65vw] lg:max-w-[55vw]">
