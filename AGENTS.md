@@ -49,10 +49,18 @@ geht auf jedem Plan, auch auf Hobby ✅
 **Wer diese Region ändert, ändert einen Rechtstext mit:** Der Abschnitt
 `transfers` in der Datenschutzerklärung nennt Frankfurt namentlich.
 
-**Die Log-Dauer hängt am Vercel-Plan.** Eine Stunde auf Hobby, ein Tag auf Pro,
-drei Tage auf Enterprise ✅ (`vercel.com/docs/logs/runtime`, abgerufen
-28.08.2026). Der Abschnitt `server-logs` ist so formuliert, dass er für alle drei
-stimmt; sobald der Plan feststeht, kann dort die genaue Angabe stehen.
+**Das Projekt läuft auf dem Hobby-Plan, und der Datenschutztext sagt es.** Der
+Abschnitt `server-logs` nennt eine Stunde als Aufbewahrungsdauer — das ist
+Hobbys Wert. Pro hält Logs einen Tag, Enterprise drei ✅
+(`vercel.com/docs/logs/runtime`, abgerufen 28.08.2026). **Ein Plan-Wechsel macht
+diesen Satz falsch** und muss dort nachgezogen werden.
+
+**Hobby erlaubt keine geschäftliche Nutzung.** Der Plan ist ausdrücklich auf
+nicht-kommerzielle, private Nutzung beschränkt ✅ (`vercel.com/docs/plans/hobby`,
+Verweis auf die Fair-Use-Regeln, abgerufen 28.08.2026). raban.ai ist die Website
+eines Unternehmens; ein Verstoß kann laut Vercel zur Pausierung von Account oder
+Deployment führen. Das ist eine offene Entscheidung der Gründer, kein Befund über
+etwas Beschlossenes.
 
 ## Gestaltungssprache
 

@@ -47,10 +47,10 @@ const SECTIONS: (Section & { body: React.ReactNode })[] = [
       </p>
     ),
   },
-  // Retention is Vercel's own, set by the plan this project runs on: 1 hour on
-  // Hobby, 1 day on Pro, 3 days on Enterprise (vercel.com/docs/logs/runtime,
-  // read 28.08.2026). The wording below holds for all three; narrow it to the
-  // exact figure once someone confirms the plan.
+  // One hour is the Hobby plan's runtime log retention, which is what this
+  // project runs on (vercel.com/docs/logs/runtime, read 28.08.2026). Pro keeps
+  // logs for a day and Enterprise for three, so an upgrade makes this sentence
+  // wrong — change it with the plan.
   {
     id: "server-logs",
     title: "Server logs",
@@ -58,9 +58,9 @@ const SECTIONS: (Section & { body: React.ReactNode })[] = [
       <p>
         Serving a page leaves an entry in our hosting provider&rsquo;s logs:
         the page requested, the time, the HTTP status, the browser&rsquo;s
-        user agent, and the region that handled it. Vercel keeps these for a
-        few days at most and then discards them. We do not copy them anywhere
-        else, and we do not use them to build a profile of you.
+        user agent, and the region that handled it. Vercel deletes these after
+        one hour. We do not copy them anywhere else, and we do not use them to
+        build a profile of you.
       </p>
     ),
   },
@@ -96,10 +96,9 @@ const SECTIONS: (Section & { body: React.ReactNode })[] = [
     body: (
       <p>
         This site&rsquo;s server-side code runs in Frankfurt, Germany, so
-        requests are processed inside the EU. Vercel is a US company, though,
-        and access from outside the EU cannot be ruled out. That possibility
-        rests on the European Commission&rsquo;s standard contractual clauses,
-        agreed with Vercel in our data processing agreement.
+        requests are processed inside the EU. Vercel is a US company, and for
+        any access from outside the EU we rely on the European
+        Commission&rsquo;s standard contractual clauses.
       </p>
     ),
   },
