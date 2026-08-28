@@ -39,13 +39,15 @@ Einzelunternehmen: Raban hat einen zweiten Gründer, und ob die gemeinsame Führ
 rechtlich schon eine GbR ist, ist ungeklärt. Das Favicon ist bewusst dasselbe
 Zeichen wie im Vorprojekt.
 
-**Die Startseite verarbeitet in den USA.** Vercel-Funktionen laufen ohne eigene
-Angabe in `iad1`, Washington D.C. ✅ (`vercel.com/docs/regions`, „Compute
-defaults", abgerufen 28.08.2026), und dieses Projekt setzt keine Region. Weil die
-Startseite die Geo-Header liest, ist sie dynamisch und läuft damit dort. Der
-Abschnitt `transfers` in der Datenschutzerklärung sagt das so. Eine Umstellung
-der Funktions-Region auf `fra1` (Frankfurt) würde die Verarbeitung in der EU
-halten — dann muss der Abschnitt mit umgeschrieben werden.
+**Die Verarbeitung läuft in Frankfurt, und das steht in `vercel.json`.** Ohne
+diese Datei laufen Vercel-Funktionen in `iad1`, Washington D.C. ✅
+(`vercel.com/docs/regions`, „Compute defaults", abgerufen 28.08.2026) — und die
+Startseite ist dynamisch, weil sie die Geo-Header für den Globus liest, wäre also
+dort gelaufen. `"regions": ["fra1"]` hält sie in der EU. Eine einzelne Region
+geht auf jedem Plan, auch auf Hobby ✅
+(`vercel.com/docs/functions/configuring-functions/region`, abgerufen 28.08.2026).
+**Wer diese Region ändert, ändert einen Rechtstext mit:** Der Abschnitt
+`transfers` in der Datenschutzerklärung nennt Frankfurt namentlich.
 
 **Die Log-Dauer hängt am Vercel-Plan.** Eine Stunde auf Hobby, ein Tag auf Pro,
 drei Tage auf Enterprise ✅ (`vercel.com/docs/logs/runtime`, abgerufen

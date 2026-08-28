@@ -85,20 +85,21 @@ const SECTIONS: (Section & { body: React.ReactNode })[] = [
       </p>
     ),
   },
-  // Vercel Functions default to iad1, Washington D.C. (vercel.com/docs/regions,
-  // "Compute defaults", read 28.08.2026), and this project sets no region — so
-  // the home page, which is dynamic because it reads the geo headers, runs in
-  // the USA. Setting the function region to fra1 (Frankfurt) would keep that
-  // processing inside the EU and let this section say so instead.
+  // vercel.json pins the function region to fra1 (Frankfurt). Without it Vercel
+  // defaults to iad1, Washington D.C. (vercel.com/docs/regions, "Compute
+  // defaults", read 28.08.2026) — and the home page is dynamic, because it reads
+  // the geo headers, so it would have run there. Change that region and this
+  // section has to change with it.
   {
     id: "transfers",
     title: "International data transfers",
     body: (
       <p>
-        Vercel is a US company, and the homepage runs on its servers in the
-        United States, so serving it involves a transfer outside the EU. That
-        transfer rests on the European Commission&rsquo;s standard contractual
-        clauses, agreed with Vercel in our data processing agreement.
+        This site&rsquo;s server-side code runs in Frankfurt, Germany, so
+        requests are processed inside the EU. Vercel is a US company, though,
+        and access from outside the EU cannot be ruled out. That possibility
+        rests on the European Commission&rsquo;s standard contractual clauses,
+        agreed with Vercel in our data processing agreement.
       </p>
     ),
   },
