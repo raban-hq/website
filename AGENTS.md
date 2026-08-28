@@ -29,17 +29,28 @@ statisch) und **muss in der Datenschutzerklärung stehen**: der Abschnitt
 `globe-location` ist dort angelegt und noch leer. Wer den Globus entfernt,
 entfernt auch den Abschnitt — und umgekehrt.
 
-**Die Texte stehen, bis auf zwei Stellen.** Jede offene Stelle trägt einen
-sichtbaren Marker; vor jedem Livegang muss `grep -rn "<Placeholder" app` leer
-zurückkommen.
+**Alle Texte stehen.** `grep -rn "<Placeholder" app` kommt leer zurück; das
+Bauteil bleibt für künftige offene Stellen im Repo und muss vor jedem Livegang
+wieder leer sein.
 
-**Offene Punkte vor dem Livegang:** In der Datenschutzerklärung fehlen noch
-`server-logs` und `transfers` — beide brauchen, was Vercel tatsächlich
-protokolliert und wohin es geht. Das Postfach `kontakt@raban.ai` muss noch
-eingerichtet werden; die Kontaktseite nennt es bereits. Das Impressum steht
-vorläufig auf Simons Einzelunternehmen: Raban hat einen zweiten Gründer, und ob
-die gemeinsame Führung rechtlich schon eine GbR ist, ist ungeklärt. Das Favicon
-ist bewusst dasselbe Zeichen wie im Vorprojekt.
+**Offene Punkte:** Das Postfach `kontakt@raban.ai` muss noch eingerichtet werden;
+die Kontaktseite nennt es bereits. Das Impressum steht vorläufig auf Simons
+Einzelunternehmen: Raban hat einen zweiten Gründer, und ob die gemeinsame Führung
+rechtlich schon eine GbR ist, ist ungeklärt. Das Favicon ist bewusst dasselbe
+Zeichen wie im Vorprojekt.
+
+**Die Startseite verarbeitet in den USA.** Vercel-Funktionen laufen ohne eigene
+Angabe in `iad1`, Washington D.C. ✅ (`vercel.com/docs/regions`, „Compute
+defaults", abgerufen 28.08.2026), und dieses Projekt setzt keine Region. Weil die
+Startseite die Geo-Header liest, ist sie dynamisch und läuft damit dort. Der
+Abschnitt `transfers` in der Datenschutzerklärung sagt das so. Eine Umstellung
+der Funktions-Region auf `fra1` (Frankfurt) würde die Verarbeitung in der EU
+halten — dann muss der Abschnitt mit umgeschrieben werden.
+
+**Die Log-Dauer hängt am Vercel-Plan.** Eine Stunde auf Hobby, ein Tag auf Pro,
+drei Tage auf Enterprise ✅ (`vercel.com/docs/logs/runtime`, abgerufen
+28.08.2026). Der Abschnitt `server-logs` ist so formuliert, dass er für alle drei
+stimmt; sobald der Plan feststeht, kann dort die genaue Angabe stehen.
 
 ## Gestaltungssprache
 

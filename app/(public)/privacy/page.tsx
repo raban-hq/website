@@ -1,4 +1,3 @@
-import { Placeholder } from "@/app/components/placeholder";
 import { SectionIndex, type Section } from "../../components/section-index";
 
 // One list feeds both the sticky index and the headings, so the order and the
@@ -10,10 +9,6 @@ import { SectionIndex, type Section } from "../../components/section-index";
 // other site's features (account login, AI voice interviews) are deliberately
 // not here; add sections as the site grows features that need them. The globe
 // IS here — this site has one.
-//
-// Two bodies are still placeholders: server logs and international transfers.
-// Both need what Vercel actually keeps and where it goes, which no one has
-// looked up yet — and a guess in a privacy policy is worse than an empty slot.
 const SECTIONS: (Section & { body: React.ReactNode })[] = [
   {
     id: "controller",
@@ -52,7 +47,23 @@ const SECTIONS: (Section & { body: React.ReactNode })[] = [
       </p>
     ),
   },
-  { id: "server-logs", title: "Server logs", body: <Placeholder>what the host logs, and how long it is kept</Placeholder> },
+  // Retention is Vercel's own, set by the plan this project runs on: 1 hour on
+  // Hobby, 1 day on Pro, 3 days on Enterprise (vercel.com/docs/logs/runtime,
+  // read 28.08.2026). The wording below holds for all three; narrow it to the
+  // exact figure once someone confirms the plan.
+  {
+    id: "server-logs",
+    title: "Server logs",
+    body: (
+      <p>
+        Serving a page leaves an entry in our hosting provider&rsquo;s logs:
+        the page requested, the time, the HTTP status, the browser&rsquo;s
+        user agent, and the region that handled it. Vercel keeps these for a
+        few days at most and then discards them. We do not copy them anywhere
+        else, and we do not use them to build a profile of you.
+      </p>
+    ),
+  },
   {
     id: "cookies",
     title: "Cookies",
@@ -74,7 +85,23 @@ const SECTIONS: (Section & { body: React.ReactNode })[] = [
       </p>
     ),
   },
-  { id: "transfers", title: "International data transfers", body: <Placeholder>whether data leaves the EU, and on what basis</Placeholder> },
+  // Vercel Functions default to iad1, Washington D.C. (vercel.com/docs/regions,
+  // "Compute defaults", read 28.08.2026), and this project sets no region — so
+  // the home page, which is dynamic because it reads the geo headers, runs in
+  // the USA. Setting the function region to fra1 (Frankfurt) would keep that
+  // processing inside the EU and let this section say so instead.
+  {
+    id: "transfers",
+    title: "International data transfers",
+    body: (
+      <p>
+        Vercel is a US company, and the homepage runs on its servers in the
+        United States, so serving it involves a transfer outside the EU. That
+        transfer rests on the European Commission&rsquo;s standard contractual
+        clauses, agreed with Vercel in our data processing agreement.
+      </p>
+    ),
+  },
   {
     id: "your-rights",
     title: "Your rights",
