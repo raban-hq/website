@@ -29,13 +29,17 @@ statisch) und **muss in der Datenschutzerklärung stehen**: der Abschnitt
 `globe-location` ist dort angelegt und noch leer. Wer den Globus entfernt,
 entfernt auch den Abschnitt — und umgekehrt.
 
-**Alle Texte sind noch leer.** Jede offene Stelle trägt einen sichtbaren Marker.
-Vor jedem Livegang muss `grep -rn "<Placeholder" app` leer zurückkommen.
+**Die Texte stehen, bis auf zwei Stellen.** Jede offene Stelle trägt einen
+sichtbaren Marker; vor jedem Livegang muss `grep -rn "<Placeholder" app` leer
+zurückkommen.
 
-**Offene Punkte vor dem Livegang:** Impressum und Datenschutz ausfüllen (§ 5 DDG
-verlangt einen echten Anbieter mit Postanschrift), Postfach `kontakt@raban.ai`
-einrichten, Abschnitt `globe-location` in der Datenschutzerklärung schreiben.
-Das Favicon ist bewusst dasselbe Zeichen wie im Vorprojekt.
+**Offene Punkte vor dem Livegang:** In der Datenschutzerklärung fehlen noch
+`server-logs` und `transfers` — beide brauchen, was Vercel tatsächlich
+protokolliert und wohin es geht. Das Postfach `kontakt@raban.ai` muss noch
+eingerichtet werden; die Kontaktseite nennt es bereits. Das Impressum steht
+vorläufig auf Simons Einzelunternehmen: Raban hat einen zweiten Gründer, und ob
+die gemeinsame Führung rechtlich schon eine GbR ist, ist ungeklärt. Das Favicon
+ist bewusst dasselbe Zeichen wie im Vorprojekt.
 
 ## Gestaltungssprache
 

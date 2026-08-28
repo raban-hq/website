@@ -1,28 +1,45 @@
-import { Placeholder } from "@/app/components/placeholder";
 import { SectionIndex, type Section } from "../../components/section-index";
 
 // Same data-driven shape as /privacy: one list feeds both the sticky index and
 // the headings, and the numbering falls out of the order rather than being
 // typed in.
 //
-// EVERY BODY IS A PLACEHOLDER. A German business site needs an Impressum under
-// § 5 DDG naming a real provider with a postal address — that has to be filled
-// in by a founder before this site goes live. Nothing here is invented.
+// Filled with Simon Waiß's sole proprietorship as an interim provider: Raban
+// has a second founder (Johannes Koch), and whether the two of them running
+// the business together already forms a GbR under German law is still open.
+// Revisit this section once that is resolved.
 const SECTIONS: (Section & { body: React.ReactNode })[] = [
   {
     id: "provider",
     title: "Provider",
-    body: <Placeholder>legal name and postal address of the provider (§ 5 DDG)</Placeholder>,
+    body: (
+      <p>
+        Simon Wai&szlig;, sole proprietorship (Einzelunternehmen).
+        <br />
+        Fichtenweg 22, 72076 T&uuml;bingen, Germany.
+      </p>
+    ),
   },
   {
     id: "contact",
     title: "Contact",
-    body: <Placeholder>contact details the Impressum has to carry</Placeholder>,
+    body: (
+      <p>
+        Phone: +49 162 2091542
+        <br />
+        Email: simon@simonwaiss.de
+      </p>
+    ),
   },
   {
     id: "dispute-resolution",
     title: "Consumer dispute resolution",
-    body: <Placeholder>the VSBG statement</Placeholder>,
+    body: (
+      <p>
+        We are not obligated to participate in dispute resolution proceedings
+        before a consumer arbitration board, and do not intend to.
+      </p>
+    ),
   },
 ];
 
