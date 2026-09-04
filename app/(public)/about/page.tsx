@@ -1,19 +1,19 @@
-// Rebuilt, not copied: the other site's About page was a personal story
-// (university, hometown) and none of it belongs here.
-export default function AboutPage() {
+import { TeamBlock } from "@/app/components/pitch/team";
+import { getLocale } from "@/utils/locale-server";
+
+// The team slide from the pitch deck (Raban Pitch v2, slide 8); the same block
+// also closes the home page.
+const H1 = { de: "Über uns", en: "About us" } as const;
+
+export default async function AboutPage() {
+  const locale = await getLocale();
   return (
     <main className="px-[var(--gutter)] pb-[var(--content-gap)] pt-[var(--content-top)]">
       <div className="space-y-[var(--header-gap)] text-base text-ink">
-        <h1 className="text-[length:var(--h1)] font-black leading-[var(--h1-line)]">About</h1>
-        <div className="max-w-[var(--measure)] space-y-[var(--header-gap)]">
-          <p>
-            In most established companies, the most important knowledge lives in a
-            few people&rsquo;s heads — and many of them are retiring in the
-            next few years. Raban captures that knowledge in conversation before
-            they leave, and puts it to work for the rest of the team.
-          </p>
-          <p>Built by Simon Waiß and Johannes Koch.</p>
-        </div>
+        <h1 className="text-[length:var(--h1)] font-black leading-[var(--h1-line)]">
+          {H1[locale]}
+        </h1>
+        <TeamBlock locale={locale} />
       </div>
     </main>
   );

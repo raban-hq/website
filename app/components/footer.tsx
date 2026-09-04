@@ -1,23 +1,38 @@
 import Link from "next/link";
 
+import type { Locale } from "@/utils/locale";
+
+import { LanguageFlip } from "./language-flip";
 import { LinkStyle } from "./link-style";
 import { ThemeFlip } from "./theme-flip";
 
-// The footer's link groups: a label and its routes. Declared here so the markup
-// below stays a single map and a new group is one entry, not new JSX. The nav
-// routes deliberately don't appear here — they're already in the navbar on every
-// page, and repeating them gave the footer a column that earned nothing.
-const GROUPS: { label: string; links: [string, string][] }[] = [
-  {
-    label: "Terms & Policies",
-    links: [
-      ["/privacy", "Privacy policy"],
-      ["/legal", "Legal"],
-    ],
-  },
-];
+// The footer's link groups: a label and its routes, in both languages. Declared
+// here so the markup below stays a single map and a new group is one entry, not
+// new JSX. The nav routes deliberately don't appear here — they're already in
+// the navbar on every page, and repeating them gave the footer a column that
+// earned nothing.
+const GROUPS: Record<Locale, { label: string; links: [string, string][] }[]> = {
+  de: [
+    {
+      label: "Rechtliches",
+      links: [
+        ["/privacy", "Datenschutz"],
+        ["/legal", "Impressum"],
+      ],
+    },
+  ],
+  en: [
+    {
+      label: "Terms & Policies",
+      links: [
+        ["/privacy", "Privacy policy"],
+        ["/legal", "Legal"],
+      ],
+    },
+  ],
+};
 
-export function Footer() {
+export function Footer({ locale }: { locale: Locale }) {
   return (
     <footer
       // vw-based page heights land on a fractional pixel at some viewport
@@ -34,7 +49,8 @@ export function Footer() {
       <div className="flex justify-between gap-[var(--header-gap)]">
         <div className="flex flex-none flex-col items-start gap-4">
           <span>Raban</span>
-          <ThemeFlip />
+          <LanguageFlip locale={locale} />
+          <ThemeFlip locale={locale} />
         </div>
         {/* The groups sit opposite the wordmark at every width — on a phone too,
             where there's room for one column beside it. A second group stacks
@@ -42,7 +58,7 @@ export function Footer() {
             the horizontal gap between columns stays wider than any vertical gap
             inside them, so they read as separate lists rather than one grid. */}
         <div className="flex flex-col gap-[var(--header-gap)] sm:flex-row sm:gap-[calc(var(--gutter)*2)]">
-          {GROUPS.map((group) => (
+          {GROUPS[locale].map((group) => (
             <div key={group.label} className="flex flex-col items-start gap-4">
               {/* Group label: the same size and weight as the links it heads,
                   and at full ink — tone is still the only thing separating them,

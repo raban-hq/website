@@ -29,38 +29,39 @@ statisch) und **muss in der Datenschutzerklärung stehen**: der Abschnitt
 `globe-location` ist dort angelegt und noch leer. Wer den Globus entfernt,
 entfernt auch den Abschnitt — und umgekehrt.
 
-**Alle Texte stehen.** `grep -rn "<Placeholder" app` kommt leer zurück; das
-Bauteil bleibt für künftige offene Stellen im Repo und muss vor jedem Livegang
-wieder leer sein.
+**Texte und Grafiken:** Die Startseite liest unter dem Globus das Pitch-Deck
+(Claude-Design-Projekt „Raban Pitch v2") als zwei Kapitel: **Problem** (Folie 2,
+wo Wissen liegt) und **Lösung** (Folien 5–7: so funktioniert Raban,
+Verifikationsschleife, Eigentum und Preis). Die beiden Statistik-Folien (1 von
+3, 3 Millionen) sind bewusst draußen — die Komponenten liegen noch unter
+`app/components/pitch/` (`one-in-three.tsx`, `next-four-years.tsx`), falls sie
+zurückkommen; die Schlussfolie „Pilot im September" ebenfalls draußen
+(investorengerichtet, zeitgebunden). `/product` wiederholt 5–7, `/about` zeigt
+Folie 8 (Team). Eine Folie ist eine Sektion in
+`app/components/pitch/sections.tsx`: Titel, Grafik in voller Inhaltsbreite,
+darunter zwei bis drei Sätze Kundentext — was ein Käufer aus dieser Folie
+wissen muss, verdichtet aus dem Pitch-Skript und an den Leser („Sie")
+adressiert; nicht das Skript selbst. Die
+SVG-Grafiken sind auf die Farb-Tokens der Seite portiert (Akzent = `red-600`,
+hellere Stufen als Deckkraft davon) und zeichnen ihre Linien mit
+`vector-effect: non-scaling-stroke` in festen 2px (eine 1px-Linie verschmiert,
+sobald sie nicht auf einem halben Pixel sitzt; 2px decken immer zwei ganze
+Pixel). Die Bilder der Team-Folie liegen in `app/assets/`. Die Seite ist
+zweisprachig: Deutsch ist Standard, Englisch schaltet die `D`/`E`-Kapsel in der
+Fußzeile über ein Cookie (`utils/locale.ts`, `utils/locale-server.ts`);
+Navigation, Fußzeile, Seiten und Grafiken tragen ihre Texte als `de`/`en`-Paar
+direkt in der Datei. Die Kapitel der Startseite stehen `--content-gap`
+auseinander statt `--header-gap` — Grafiken in voller Breite brauchen mehr
+Luft als Fließtext; das ist die eine bewusste Ausnahme von der Abstandsregel
+unten. Alle diese Texte sind Entwurf und brauchen vor dem Livegang noch die
+Gründer-Freigabe — wie jeder Satz hier. Das `Placeholder`-Bauteil bleibt für künftige offene
+Stellen im Repo; vor jedem Livegang muss `grep -rn "<Placeholder" app` leer
+zurückkommen.
 
-**Offene Punkte:** Das Postfach `kontakt@raban.ai` muss noch eingerichtet werden;
-die Kontaktseite nennt es bereits. Das Impressum steht vorläufig auf Simons
-Einzelunternehmen: Raban hat einen zweiten Gründer, und ob die gemeinsame Führung
-rechtlich schon eine GbR ist, ist ungeklärt. Das Favicon ist bewusst dasselbe
-Zeichen wie im Vorprojekt.
-
-**Die Verarbeitung läuft in Frankfurt, und das steht in `vercel.json`.** Ohne
-diese Datei laufen Vercel-Funktionen in `iad1`, Washington D.C. ✅
-(`vercel.com/docs/regions`, „Compute defaults", abgerufen 28.08.2026) — und die
-Startseite ist dynamisch, weil sie die Geo-Header für den Globus liest, wäre also
-dort gelaufen. `"regions": ["fra1"]` hält sie in der EU. Eine einzelne Region
-geht auf jedem Plan, auch auf Hobby ✅
-(`vercel.com/docs/functions/configuring-functions/region`, abgerufen 28.08.2026).
-**Wer diese Region ändert, ändert einen Rechtstext mit:** Der Abschnitt
-`transfers` in der Datenschutzerklärung nennt Frankfurt namentlich.
-
-**Das Projekt läuft auf dem Hobby-Plan, und der Datenschutztext sagt es.** Der
-Abschnitt `server-logs` nennt eine Stunde als Aufbewahrungsdauer — das ist
-Hobbys Wert. Pro hält Logs einen Tag, Enterprise drei ✅
-(`vercel.com/docs/logs/runtime`, abgerufen 28.08.2026). **Ein Plan-Wechsel macht
-diesen Satz falsch** und muss dort nachgezogen werden.
-
-**Hobby erlaubt keine geschäftliche Nutzung.** Der Plan ist ausdrücklich auf
-nicht-kommerzielle, private Nutzung beschränkt ✅ (`vercel.com/docs/plans/hobby`,
-Verweis auf die Fair-Use-Regeln, abgerufen 28.08.2026). raban.ai ist die Website
-eines Unternehmens; ein Verstoß kann laut Vercel zur Pausierung von Account oder
-Deployment führen. Das ist eine offene Entscheidung der Gründer, kein Befund über
-etwas Beschlossenes.
+**Offene Punkte vor dem Livegang:** Impressum und Datenschutz ausfüllen (§ 5 DDG
+verlangt einen echten Anbieter mit Postanschrift), Postfach `kontakt@raban.ai`
+einrichten, Abschnitt `globe-location` in der Datenschutzerklärung schreiben.
+Das Favicon ist bewusst dasselbe Zeichen wie im Vorprojekt.
 
 ## Gestaltungssprache
 
@@ -89,7 +90,7 @@ The exception is the **document hierarchy**: `<h1>` and `<h2>` carry both size *
 - **The `dark:` variant exists but is nearly always the wrong tool.** It's redefined in `app/globals.css` so it means "dark is what's on screen" — system preference *or* the manual pin — because Tailwind's stock `dark:` is the media query alone and would ignore the footer flip. Reach for it only when what changes isn't a colour (the theme flip's knob position and its screen-reader labels); a utility that has to name a theme is usually a token that should have existed.
 
 **The theme flip** lives in the footer under the wordmark (`app/components/theme-flip.tsx`), and the whole feature is: follow the device, until told otherwise.
-- **It is a capsule and nothing else** — 32×16 on the 8px grid, `rounded-full` (the chrome's radius-is-half-the-height rule taken to its limit), a hairline track and a solid knob, both in `currentColor` so the switch is one object. It is **full ink at rest and has no hover state at all** (`icon highlight={false}` — no box, no dim, no resolve), the only control in the app with none. Not the half ink the footer's links rest at: a capsule is not a word, and a hairline track at half of half (`border-current/40` through `slab-ink/50`) is a control you can barely see. And no hover mark either, because the knob already answers louder than one: a click whose whole result is a 150ms slide across the capsule doesn't need a second signal saying what the first says better. No label, no icon, no filled track: **one distinction, and it's position** — left is light, right is dark, the way every switch in every OS runs. The name lives in a pair of `sr-only` spans swapped by the same variant that moves the knob, so the accessible name is always the action the button will perform and there is no `aria-label` to keep in sync. The knob's 150ms slide is the app's one **deliberate transition** — everything else snaps — because a switch whose knob teleports reads as a repaint rather than a mechanism.
+- **It is a capsule and nothing else** — 64×32 on the 8px grid (the language flip above it is the same capsule with a letter per language inside), `rounded-full` (the chrome's radius-is-half-the-height rule taken to its limit), a hairline track and a solid knob, both in `currentColor` so the switch is one object. It is **full ink at rest and has no hover state at all** (`icon highlight={false}` — no box, no dim, no resolve), the only control in the app with none. Not the half ink the footer's links rest at: a capsule is not a word, and a hairline track at half of half (`border-current/40` through `slab-ink/50`) is a control you can barely see. And no hover mark either, because the knob already answers louder than one: a click whose whole result is a 150ms slide across the capsule doesn't need a second signal saying what the first says better. No label, no icon, no filled track: **one distinction, and it's position** — left is light, right is dark, the way every switch in every OS runs. The name lives in a pair of `sr-only` spans swapped by the same variant that moves the knob, so the accessible name is always the action the button will perform and there is no `aria-label` to keep in sync. The knob's 150ms slide is the app's one **deliberate transition** — everything else snaps — because a switch whose knob teleports reads as a repaint rather than a mechanism.
 - **Following the device is the default, and it is the absence of a choice** — no `[data-theme]` on `<html>`, nothing in storage, `color-scheme: light dark` doing the work. So it stays live: change your Mac to dark at sunset and the page follows, no reload, no listener.
 - **There is no "System" notch on the switch**, because flipping to whatever the device already says *removes* the override rather than pinning the same value — that's how you get back to following the device. Two visible states, three real ones, one control. Don't rebuild this as a three-way segmented control.
 - **It holds no React state and runs no effect.** The active theme lives in the DOM, the knob is placed from it by CSS (`dark:translate-x-4`), and the click handler reads the DOM back at click time. A `useState` copy would render the knob left for everyone on the server and correct itself after hydration — the exact flash this avoids.
@@ -134,8 +135,8 @@ The exception is the **document hierarchy**: `<h1>` and `<h2>` carry both size *
   - **A clicked entry pins the highlight** until the reader scrolls for themselves (released on `wheel`/`touchmove`/`keydown`, never on `scroll` — the jump fires that itself). The tail of a document can sit below the line and never reach it: on `/privacy` the last three sections activate past the maximum scroll offset, so position alone can't tell an anchor jump to section 12 from one to section 13. Honouring the click is what makes every entry land on itself; once scrolling has run out, the highlight hands off to the nearest section still below the line rather than parking several screens above.
 
 **Type**
-- One mono, **no web font** — the system stack (SSI-style, like ssi.inc): `"SF Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace`, set directly on `body` in `app/globals.css`. Renders as SF Mono on Mac, Consolas/Liberation Mono elsewhere.
-- SF Mono has **real weights**, so `font-bold`/`font-semibold` render cleanly (no faux-bold). Body sits at **medium (500)** by default.
+- One face: **Archivo**, the typeface the pitch deck is set in (its Modernist design system runs Archivo 800 for headings, 400 for body), self-hosted through `next/font/google` in `app/layout.tsx` (variable font, latin + latin-ext, published as `--font-sans`) and set on `body` in `app/globals.css` with the system Helvetica stack (`"Helvetica Neue", Helvetica, Arial, sans-serif`) behind it as fallback. Body rests at 400; `<h1>` keeps `font-black`, `<h2>` `font-semibold`. Chosen 2026-09-03 by Johannes so site and deck read as one. (History: the site ran on the bare system mono stack, SSI-style, with no web font; then briefly IBM Plex Mono and Inter on the same day. Superseded.)
+- Inter is a variable font, so every weight from `font-semibold` to `font-black` is real (no faux-bold). Body sits at **regular (400)** by default.
 - **Spacing:** `letter-spacing: 0` (mono's natural width — no added tracking) and `line-height: 1.6`, both on `body`. Tighten leading locally for large display text (the home lede uses `leading-[1.15]`), but keep tracking at 0 — negative tracking fights a monospaced face.
 - **The scale is five steps, and it lives in `app/globals.css` — never hardcode a heading size.** Body and navbar at **16px**; a **12px** small size (`text-[12px]`) for the globe clock, the section index, and *everything* in the footer; the home hero at **28px** (`text-[1.75rem]`, its own thing — see below); and the two heading vars, **`--h1`** and **`--h2`**, which every `<h1>`/`<h2>` in the app reads as `text-[length:var(--h1)] leading-[var(--h1-line)]`. Changing the heading scale is therefore one edit in one file, not nineteen.
   - Headings carry **both** the size step and a weight step — `font-black` on `<h1>`, `font-semibold` on `<h2>` — the deliberate exception to the one-distinction rule above. See there for why, and for why it shouldn't be undone again.

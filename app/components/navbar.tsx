@@ -4,15 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+import type { Locale } from "@/utils/locale";
+
 import { LinkStyle } from "./link-style";
 
-// The right-hand navbar links (also stacked in the phone menu). Drives both the
-// rendered actions and their breadcrumb labels, so the two can't drift.
-const NAV_LINKS: [string, string][] = [
-  ["/product", "Product"],
-  ["/about", "About"],
-  ["/contact", "Contact"],
-];
+// The right-hand navbar links (also stacked in the phone menu), per language.
+// Drives both the rendered actions and their breadcrumb labels, so the two
+// can't drift.
+const NAV_LINKS: Record<Locale, [string, string][]> = {
+  de: [
+    ["/product", "Produkt"],
+    ["/about", "Über uns"],
+    ["/contact", "Kontakt"],
+  ],
+  en: [
+    ["/product", "Product"],
+    ["/about", "About"],
+    ["/contact", "Contact"],
+  ],
+};
 
 // Routes that render the globe and listen for "raban-refresh" to re-run it.
 // Only the home page for now — the other project also ran it on /about, which
@@ -20,11 +30,24 @@ const NAV_LINKS: [string, string][] = [
 const GLOBE_PAGES = new Set(["/"]);
 
 // Breadcrumb labels: the nav links plus the routes that only appear in a path.
-const CRUMBS: Record<string, string> = {
-  ...Object.fromEntries(NAV_LINKS),
-  "/privacy": "Privacy policy",
-  "/legal": "Legal",
+const CRUMBS: Record<Locale, Record<string, string>> = {
+  de: {
+    ...Object.fromEntries(NAV_LINKS.de),
+    "/privacy": "Datenschutz",
+    "/legal": "Impressum",
+  },
+  en: {
+    ...Object.fromEntries(NAV_LINKS.en),
+    "/privacy": "Privacy policy",
+    "/legal": "Legal",
+  },
 };
+
+// The chrome's own words — the phone menu button and the section-index row.
+const UI = {
+  de: { menu: "Menü", closeMenu: "Menü schließen", sections: "Abschnitte", closeSections: "Abschnitte schließen" },
+  en: { menu: "Menu", closeMenu: "Close menu", sections: "Section index", closeSections: "Close section index" },
+} as const;
 
 function humanize(segment: string): string {
   return segment
@@ -43,6 +66,7 @@ const ID_SEGMENT = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
 function pathCrumbs(
   pathname: string,
   overrides: Record<string, string>,
+  locale: Locale,
 ): { href: string; label: string }[] {
   let href = "";
   return pathname
@@ -51,17 +75,20 @@ function pathCrumbs(
     .map((segment) => {
       href += `/${segment}`;
       const label =
-        overrides[href] ?? CRUMBS[href] ?? (ID_SEGMENT.test(segment) ? "…" : humanize(segment));
+        overrides[href] ??
+        CRUMBS[locale][href] ??
+        (ID_SEGMENT.test(segment) ? "…" : humanize(segment));
       return { href, label };
     });
 }
 
-export function Navbar() {
+export function Navbar({ locale = "de" }: { locale?: Locale }) {
   const pathname = usePathname();
+  const ui = UI[locale];
   // Page-supplied labels for path segments the URL can't name (e.g. an id → its
   // person's name); pages dispatch "raban-crumb" once resolved.
   const [crumbOverrides, setCrumbOverrides] = useState<Record<string, string>>({});
-  const crumbs = pathCrumbs(pathname, crumbOverrides);
+  const crumbs = pathCrumbs(pathname, crumbOverrides, locale);
   const trailRef = useRef<HTMLDivElement>(null);
   const [overflowing, setOverflowing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -97,7 +124,7 @@ export function Navbar() {
   // the two layouts can't drift.
   const actions = (onNavigate?: () => void, block = false) => (
     <>
-      {NAV_LINKS.map(([href, label]) => (
+      {NAV_LINKS[locale].map(([href, label]) => (
         <LinkStyle key={href} chrome block={block}>
           <Link
             href={href}
@@ -261,7 +288,7 @@ export function Navbar() {
         <LinkStyle chrome>
           <button
             type="button"
-            aria-label={menuOpen ? "Close menu" : "Menu"}
+            aria-label={menuOpen ? ui.closeMenu : ui.menu}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}
             className="cursor-pointer bg-transparent p-0"
@@ -360,7 +387,7 @@ export function Navbar() {
                 <button
                   type="button"
                   aria-expanded={sectionsOpen}
-                  aria-label={sectionsOpen ? "Close section index" : "Section index"}
+                  aria-label={sectionsOpen ? ui.closeSections : ui.sections}
                   onClick={() => setSectionsOpen((open) => !open)}
                   className="flex h-[var(--nav-h)] w-full cursor-pointer items-center justify-between gap-[var(--gutter)] bg-transparent p-0 text-left text-ink"
                 >

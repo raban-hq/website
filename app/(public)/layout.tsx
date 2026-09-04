@@ -1,6 +1,11 @@
+import { getLocale } from "@/utils/locale-server";
+
 import { Footer } from "../components/footer";
 
-export default function PublicLayout({ children }: { children: React.ReactNode }) {
+export default async function PublicLayout({ children }: { children: React.ReactNode }) {
+  // The language choice (a cookie, German default) is read once here for the
+  // footer's switch; pages read it themselves for their copy.
+  const locale = await getLocale();
   return (
     // The page is a card hanging from the top of the viewport: paper, square
     // where it meets the navbar, rounded where it ends. The radius sits on the
@@ -41,7 +46,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           after <Footer /> so it paints over the slab, and it must stay
           pointer-events-none: it lies over the last 84px of the page. */}
       <div className="relative">
-        <Footer />
+        <Footer locale={locale} />
         <div className="pointer-events-none absolute inset-x-0 bottom-full h-[calc(var(--radius)*3)] rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] shadow-[var(--page-cast)]" />
       </div>
     </div>

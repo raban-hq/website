@@ -214,6 +214,10 @@
   /* The globe marker and its typed label: a mid grey that holds its own against
      either paper, so it needs no second arm. */
   --globe-marker: #737373;
+  /* Ink sitting ON the red accent (the pitch graphics' filled blocks). Always
+     white: the accent itself doesn't flip with the theme, so its ink can't
+     either — paper-coloured text would go near-black on red in dark. */
+  --on-accent: #fff;
 }
 
 /* Tailwind sees the palette through these four utility colours, so the whole
@@ -227,6 +231,7 @@
   --color-ink: var(--ink);
   --color-slab: var(--slab);
   --color-slab-ink: var(--slab-ink);
+  --color-on-accent: var(--on-accent);
 }
 
 /* The manual override, and the whole of it: pinning `color-scheme` re-picks
@@ -268,8 +273,10 @@
 html, body {
   background: var(--paper);
   color: var(--ink);
-  /* System monospace stack (no web font), à la ssi.inc — SF Mono on Mac. */
-  font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+  /* Archivo — the pitch deck's typeface — self-hosted by next/font (see
+     app/layout.tsx, which sets --font-sans on <html>); the system Helvetica
+     stack behind it is the fallback while it loads. */
+  font-family: var(--font-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   /* Contain horizontal overflow (e.g. the home globe). Must sit on html, not
      just body: on iOS Safari the viewport scroll lives on the root element, so
@@ -286,8 +293,9 @@ html, body {
      own even spacing left at its natural width (no extra tracking). */
   line-height: 1.6;
   letter-spacing: 0;
-  /* Uniform medium weight for all text across the app. */
-  font-weight: 500;
+  /* Regular weight for all body text; a grotesque at 500 reads heavy where
+     the mono it replaced needed the extra ink. Headings carry their own. */
+  font-weight: 400;
 }
 
 /* Default body text size is 16px. Set on body only (not html) so the rem-based
@@ -296,4 +304,15 @@ html, body {
    off the --h1/--h2 vars above. */
 body {
   font-size: 16px;
+}
+
+/* The pitch-deck charts (app/components/pitch/) are SVGs scaled to the full
+   content width, so a 2-unit stroke lands on fractional device pixels and
+   the anti-aliasing renders a vertical edge lighter than a horizontal one.
+   non-scaling-stroke keeps every stroke at its declared PIXEL width whatever
+   the scale — 2px lines, 1px hairlines, the way the deck drew them at 1:1 —
+   so the lines stay even and crisp at any viewport. Not inherited, so it
+   targets the drawn elements themselves. */
+.chart :is(path, line, rect, circle, ellipse, polyline, polygon) {
+  vector-effect: non-scaling-stroke;
 }
