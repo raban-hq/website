@@ -23,7 +23,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           section index to it (same note as on html/body in globals.css). It
           costs nothing: the globe exactly fills its section at every breakpoint
           and is smaller than it while animating. */}
-      <div className="grow overflow-clip rounded-b-[var(--radius)] bg-paper shadow-[var(--page-lip)]">
+      <div className="grow overflow-clip rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] bg-paper shadow-[var(--page-lip)]">
         {children}
       </div>
       {/* The boundary. The footer is the surface being cast onto, and the empty
@@ -42,7 +42,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           pointer-events-none: it lies over the last 84px of the page. */}
       <div className="relative">
         <Footer />
-        <div className="pointer-events-none absolute inset-x-0 bottom-full h-[calc(var(--radius)*3)] rounded-b-[var(--radius)] shadow-[var(--page-cast)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-full h-[calc(var(--radius)*3)] rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] shadow-[var(--page-cast)]" />
       </div>
     </div>
   );

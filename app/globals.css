@@ -82,25 +82,26 @@
      built first and were invisible on a bright screen. The alphas are tuned per
      ARM rather than shared: white spilling onto black and black falling onto
      white do not read the same at the same number.
-     On the WIDTH, and a correction. Four earlier attempts at a cast here were
-     built and dropped (0 8px 20px, then spread equal to blur, then a four-layer
-     stack, then a gradient strip), and the note left behind said a wide blur
-     always thins at the screen edges — a viewport-wide silhouette has nothing
-     beyond the edge to blur in from — so keep the blur under --radius. That is
-     over-cautious, and this disproves it: 40px of blur, well past the 28px
-     radius, and the run is even end to end at 400px and at 1280px. Two things
-     buy that. The -10px SPREAD pulls the shadow rect in from the screen edges,
-     so the blur has margin to sample before it reaches the visible end; and the
-     20px OFFSET puts the throw well below the corner, where it is the bottom
-     edge casting, not the arc. Keep the negative spread if you widen it
-     further, and check both ends — that part of the old note was real.
-     Note the spread also shrinks the caster, so the element throwing the cast
-     must stay taller than 2*(radius) or the corner radius scales down with it
-     and the glow's corner stops matching the paper's. */
-  --page-lip: inset 0 -5px 9px -5px light-dark(rgba(0, 0, 0, 0.13), rgba(255, 255, 255, 0.13));
+     The PROFILE is the point: densest at the boundary, gone within ~20px. It
+     reads as the paper pressed up against a cloth from underneath — the
+     fabric is tightest right at the edge and relaxes fast — which is the
+     neumorphic way of saying the two surfaces are in contact rather than one
+     floating over the other. Two layers do it: a tight, strong core (1px down,
+     4px blur) that puts near-full ink on the first pixels below the edge, and a
+     short falloff (4px down, 16px blur) that carries it out and stops. No
+     negative spread and no long offset: an offset moves the peak AWAY from the
+     edge, which is exactly the inverse of this profile. (History: it was a
+     20px offset with a 40px blur and a -10px spread — a long throw whose peak
+     sat 20px below the boundary and whose edge was soft; it read as the card
+     hovering, and was rebuilt as this contact profile.)
+     A 16px blur sits under --radius, so the run is even end to end without
+     needing a negative spread to buy margin at the screen edges. The caster
+     element must still stay taller than 2*(radius) so its corner matches the
+     paper's. */
+  --page-lip: inset 0 -4px 8px -4px light-dark(rgba(0, 0, 0, 0.24), rgba(255, 255, 255, 0.24));
   --page-cast:
-    0 4px 10px 0 light-dark(rgba(255, 255, 255, 0.22), rgba(0, 0, 0, 0.28)),
-    0 20px 40px -10px light-dark(rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0.60));
+    0 1px 4px 0 light-dark(rgba(255, 255, 255, 0.80), rgba(0, 0, 0, 0.75)),
+    0 4px 16px 0 light-dark(rgba(255, 255, 255, 0.50), rgba(0, 0, 0, 0.60));
   /* The navbar's bottom edge, polished. An INSET shadow, so unlike a gradient
      border it follows the corner radius instead of flattening it: the ink is
      densest at the very bottom and fades upward over ~3px, so the edge reads as
