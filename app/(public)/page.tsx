@@ -47,12 +47,23 @@ export default async function HomePage() {
       {/* inset-x gives the absolute box a real width (left+right gutter); without
           it the box shrink-wraps to the lede and the deck's wider max-w can't take effect. */}
       <div className="absolute inset-x-[var(--gutter)] top-[var(--tagline-top)] z-10">
-        {/* Lede: narrow so it stacks into a tight block — 45vw phone, 35 tablet, 25 computer. */}
-        <p className="max-w-[45vw] text-[1.75rem] font-semibold leading-[1.15] md:max-w-[35vw] lg:max-w-[25vw]">
+        {/* Lede: display type. Size follows the viewport (5vw) between 36px on
+            a phone and 72px on a wide screen; extrabold with tight leading and
+            negative tracking so it reads as one block, not as prose. Width is
+            measured in characters (ch) rather than vw so the block keeps the
+            same shape at every size — about four lines — and is capped at the
+            gutter box on phones. */}
+        <p className="max-w-[min(100%,20ch)] text-[clamp(2.25rem,5vw,4.5rem)] font-extrabold leading-[1.02] tracking-[-0.03em]">
           {t.lede}
         </p>
-        {/* Supporting deck: wider for reading — 75vw phone, 65 tablet, 55 computer. */}
-        <p className="mt-6 max-w-[75vw] text-base md:max-w-[65vw] lg:max-w-[55vw]">{t.deck}</p>
+        {/* Supporting deck: slightly muted so it sits under the lede instead of
+            competing with it. On phones it stays at body size and full width so
+            it ends above the globe's centre (see the section below); from
+            tablet up it steps up to 20px with a readable measure of about 60
+            characters per line. */}
+        <p className="mt-6 text-base leading-[1.5] text-ink/70 md:mt-8 md:max-w-[58ch] md:text-xl">
+          {t.deck}
+        </p>
       </div>
       {/* height = 100vw * scale per breakpoint; scales must match getEndScale() in globe-map.tsx, else a gap appears above the footer.
           The globe centre is where the visitor's own country marker lands (globe-map.tsx rotates by [-lng, -lat]), so it must
