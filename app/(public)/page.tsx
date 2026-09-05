@@ -64,12 +64,14 @@ export default async function HomePage() {
             size and full width so it ends above the globe's centre (see the
             section below); from tablet up it steps up to 20px. From desktop up
             it is pinned to the bottom-right corner of the first screen with a
-            measure of about 36 characters per line, the same distance above the
+            measure of about 36 characters per line, set flush right so the
+            block has a straight edge on the gutter side and rags towards the
+            middle of the screen, mirroring the lede. It sits the same distance above the
             fold (--tagline-top minus --nav-h) as the lede sits below the navbar,
             so the two frame the screen top-left and bottom-right. Absolute
             rather than a flex push so the placement holds regardless of the
             lede's height. */}
-        <p className="mt-6 text-base font-semibold leading-[1.5] text-ink md:mt-8 md:max-w-[58ch] md:text-xl lg:absolute lg:right-0 lg:bottom-[calc(var(--tagline-top)-var(--nav-h))] lg:mt-0 lg:max-w-[36ch]">
+        <p className="mt-6 text-base font-semibold leading-[1.5] text-ink md:mt-8 md:max-w-[58ch] md:text-xl lg:absolute lg:right-0 lg:bottom-[calc(var(--tagline-top)-var(--nav-h))] lg:mt-0 lg:max-w-[36ch] lg:text-right">
           {t.deck}
         </p>
       </div>
