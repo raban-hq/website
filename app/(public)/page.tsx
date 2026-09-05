@@ -74,17 +74,16 @@ export default async function HomePage() {
             closing statement below. */}
         <Clock />
       </section>
-      {/* Two chapters, each opened by a hairline rule — structure from rules,
-          not elevation. Full-width graphics need more air than prose, so the
-          slides inside a chapter sit --content-gap apart rather than the
-          --header-gap that prose sections keep to; the heading→content gap
-          inside each slide stays --header-gap. */}
+      {/* Two chapters, separated by whitespace alone — no rules. Full-width
+          graphics need more air than prose, so the slides inside a chapter sit
+          --content-gap apart rather than the --header-gap that prose sections
+          keep to; the heading→content gap inside each slide stays --header-gap. */}
       <div className="space-y-[var(--content-gap)] px-[var(--gutter)] pb-[var(--content-gap)] text-base text-ink">
-        <section className="space-y-[var(--content-gap)] border-t border-ink/10 pt-[var(--content-gap)]">
+        <section className="space-y-[var(--content-gap)] pt-[var(--content-gap)]">
           <h2 className={CHAPTER}>{t.problem}</h2>
           <KnowledgeLivesSection locale={locale} />
         </section>
-        <section className="space-y-[var(--content-gap)] border-t border-ink/10 pt-[var(--content-gap)]">
+        <section className="space-y-[var(--content-gap)] pt-[var(--content-gap)]">
           <h2 className={CHAPTER}>{t.solution}</h2>
           <FlowSection locale={locale} />
           <LoopSection locale={locale} />

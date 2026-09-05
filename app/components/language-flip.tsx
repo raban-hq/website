@@ -46,10 +46,23 @@ export function LanguageFlip({ locale }: { locale: Locale }) {
               en ? "translate-x-[19px]" : ""
             }`}
           />
-          <span className={`relative flex-1 text-center ${en ? "" : "text-slab"}`} lang="de">
+          {/* Each letter is centred as a GLYPH, not as a line box: text-box
+              trims the box to the cap height (Safari 18.2+, Chrome 133+), so
+              items-center lands the capital itself on the capsule's midline.
+              Without it the 9px line box is centred and the letter sits low —
+              by an amount that differs per browser, since Safari and Chrome
+              place Archivo's baseline from different font tables. Older
+              browsers ignore the property and keep the line-box centring. */}
+          <span
+            className={`relative flex-1 text-center [text-box:trim-both_cap_alphabetic] ${en ? "" : "text-slab"}`}
+            lang="de"
+          >
             D
           </span>
-          <span className={`relative flex-1 text-center ${en ? "text-slab" : ""}`} lang="en">
+          <span
+            className={`relative flex-1 text-center [text-box:trim-both_cap_alphabetic] ${en ? "text-slab" : ""}`}
+            lang="en"
+          >
             E
           </span>
         </span>
