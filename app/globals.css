@@ -86,19 +86,17 @@
      casts on paper, and a shadow is absence of light in either theme; it is the
      polish below, not the shadow, that inverts. Don't put a light arm here. */
   --lift: 0 8px 20px light-dark(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.55));
-  /* The page card's bottom edge: the SAME edge as the navbar's, one level
-     down. It is an inset grade on the card itself — a straight alias of the
-     navbar's polish, so the two edges of the paper can't drift apart: sand
-     the navbar's lip and the card's follows. It stays inside the card, so it
-     never touches the footer below.
-     There is no outset cast to go with it. (History: a --page-cast token —
-     --lift's 8px/20px geometry, a white glow in light and a black shadow in
-     dark, thrown onto the slab from a static element above the footer — was
-     dropped because the smear over the footer read as a stain rather than an
-     edge. Before that the card had its own heavier contact profile, a 0.24
-     inset grade and a tight two-layer glow. Don't bring either back: the
-     card's edge is the navbar's lip, nothing more.) */
-  --page-lip: var(--edge-polish);
+  /* The page card's bottom edge carries NO shadow, inset or outset: the curve
+     alone, paper meeting slab, is the edge. (History: two tokens lived here.
+     --page-cast — --lift's 8px/20px geometry, a white glow in light and a
+     black shadow in dark, thrown onto the slab from a static element above
+     the footer — was dropped because the smear over the footer read as a
+     stain rather than an edge. --page-lip — an inset grade on the card's own
+     bottom row, first an alias of --edge-polish, then cut deeper and inked up
+     to 40%/60% — followed: at the navbar's numbers it was invisible against
+     the slab, and at numbers you could see it read as a drawn band. Before
+     both, a 0.24 inset grade and a tight two-layer glow. Don't bring any of
+     it back; the navbar's --edge-polish is the only lip in the app.) */
   /* The navbar's bottom edge, polished. An INSET shadow, so unlike a gradient
      border it follows the corner radius instead of flattening it: the ink is
      densest at the very bottom and fades upward over ~3px, so the edge reads as

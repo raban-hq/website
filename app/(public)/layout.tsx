@@ -15,13 +15,15 @@ export default async function PublicLayout({ children }: { children: React.React
     // notches the curve cuts out of the paper, and the footer below is the same
     // slab continuing rather than a second block.
     <div className="relative flex min-h-[100vh] flex-col bg-slab">
-      {/* --page-lip is the card's own bottom edge, graded so the sheet reads as
-          curving over the footer rather than being cut off at it. It's an inset,
-          so it sits on the card and never reaches the footer. (History: an
-          outset cast — a white glow in light, a black shadow in dark — used to
-          be thrown onto the footer from a static boundary element that sat
-          here after <Footer />. It was removed: the smear over the footer read
-          as a stain rather than an edge. The lip is the whole edge now.)
+      {/* The card's bottom edge is bare: the curve itself, paper meeting slab,
+          with no shadow on either side of the line. (History: it carried two —
+          an inset lip graded on the card's own bottom row, and an outset cast,
+          a white glow in light and a black shadow in dark, thrown onto the
+          footer from a static boundary element that sat here after <Footer />.
+          The cast went first, because the smear over the footer read as a stain
+          rather than an edge; the lip followed, because heavy enough to be seen
+          it read as a drawn band and lighter it read as nothing. Don't bring
+          either back.)
           overflow-clip makes the card clip its descendants to that curve, which
           a border-radius alone does NOT do: the globe animates on a transform,
           so while it runs it sits on its own composited layer, and a composited
@@ -30,7 +32,7 @@ export default async function PublicLayout({ children }: { children: React.React
           section index to it (same note as on html/body in globals.css). It
           costs nothing: the globe exactly fills its section at every breakpoint
           and is smaller than it while animating. */}
-      <div className="grow overflow-clip rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] bg-paper shadow-[var(--page-lip)]">
+      <div className="grow overflow-clip rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] bg-paper">
         {children}
       </div>
       <Footer locale={locale} />
