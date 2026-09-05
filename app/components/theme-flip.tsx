@@ -9,7 +9,7 @@ import { THEME_KEY } from "./theme";
 // and nothing else — no label, no icon, no second state to read. The knob's
 // side is the whole message (left is light, right is dark, the way every switch
 // in every OS runs). It sits below the language flip, which is the same capsule
-// with a letter per language inside; the two share their 64×32 size on purpose.
+// with a letter per language inside; the two share their 40×20 size on purpose.
 //
 // There are only ever two states worth showing someone: what they're looking at,
 // and the other one. The third — "follow my device" — is the DEFAULT rather than
@@ -56,7 +56,7 @@ export function ThemeFlip({ locale = "de" }: { locale?: Locale }) {
   return (
     <LinkStyle tone="light" icon highlight={false}>
       <button type="button" onClick={flip} className="cursor-pointer">
-        {/* The capsule: 64×32, both on the 8px grid, and `rounded-full` so the
+        {/* The capsule: 40×20, both on the 4px grid, and `rounded-full` so the
             ends are true half-circles — the chrome's own rounding rule (radius =
             half the height) taken to its limit. Everything is drawn in
             currentColor, so the switch is one object: LinkStyle moves the
@@ -73,16 +73,16 @@ export function ThemeFlip({ locale = "de" }: { locale?: Locale }) {
             position AND a filled track. */}
         <span
           aria-hidden="true"
-          className="relative block h-8 w-16 rounded-full border border-current/40"
+          className="relative block h-5 w-10 rounded-full border border-current/40"
         >
-          {/* The knob sits 3px inside the track (a 24px dot with 3px of air all
-              round: the capsule is 32px tall but its inside, past the 1px
-              border, is 30px — and `top` counts from there) and travels the
-              32px between the two ends: left for light, right for dark. The
+          {/* The knob sits 2px inside the track (a 14px dot with 2px of air all
+              round: the capsule is 20px tall but its inside, past the 1px
+              border, is 18px — and `top` counts from there) and travels the
+              20px between the two ends: left for light, right for dark. The
               transition is the exception to the app's no-transition rule and
               earns it — a switch whose knob teleports reads as a repaint rather
               than a mechanism. */}
-          <span className="absolute left-[3px] top-[3px] size-[24px] rounded-full bg-current transition-transform duration-150 ease-out dark:translate-x-[32px]" />
+          <span className="absolute left-[2px] top-[2px] size-[14px] rounded-full bg-current transition-transform duration-150 ease-out dark:translate-x-[20px]" />
         </span>
         {/* The accessible name, swapped by the same variant that moves the knob.
             display:none takes the inactive one out of the accessibility tree, so

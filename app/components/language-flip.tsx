@@ -10,7 +10,7 @@ import { LinkStyle } from "./link-style";
 // the same way: a capsule with a knob, drawn in currentColor, one distinction —
 // position. One letter per language sits inside the track, and the knob slides
 // behind the current one; the letter on the knob inverts to the slab so it
-// stays legible (that's legibility, not a second signal). Same 64×32 capsule
+// stays legible (that's legibility, not a second signal). Same 40×20 capsule
 // as the theme flip below it, so the two read as one family of controls.
 //
 // German is the default. The choice is a cookie, and router.refresh()
@@ -34,16 +34,16 @@ export function LanguageFlip({ locale }: { locale: Locale }) {
   return (
     <LinkStyle tone="light" icon highlight={false}>
       <button type="button" onClick={flip} className="cursor-pointer">
-        {/* 64×32 capsule (inside the 1px border: 62×30); the knob is 25×24
-            with 3px of air on every side, and it travels 31px — exactly one
+        {/* 40×20 capsule (inside the 1px border: 38×18); the knob is 15×14
+            with 2px of air on every side, and it travels 19px — exactly one
             half of the inside — so it sits centred under either letter. */}
         <span
           aria-hidden="true"
-          className="relative flex h-8 w-16 items-center rounded-full border border-current/40 text-[12px] leading-none"
+          className="relative flex h-5 w-10 items-center rounded-full border border-current/40 text-[9px] leading-none"
         >
           <span
-            className={`absolute left-[3px] top-[3px] h-[24px] w-[25px] rounded-full bg-current transition-transform duration-150 ease-out ${
-              en ? "translate-x-[31px]" : ""
+            className={`absolute left-[2px] top-[2px] h-[14px] w-[15px] rounded-full bg-current transition-transform duration-150 ease-out ${
+              en ? "translate-x-[19px]" : ""
             }`}
           />
           <span className={`relative flex-1 text-center ${en ? "" : "text-slab"}`} lang="de">
