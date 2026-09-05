@@ -77,14 +77,15 @@ export default async function HomePage() {
       {/* height = 100vw * scale per breakpoint; scales must match getEndScale() in globe-map.tsx, else a gap appears above the footer.
           The globe centre is where the visitor's own country marker lands (globe-map.tsx rotates by [-lng, -lat]); it rests at
           --hero-marker (app/globals.css), in the band between the lede and the deck, so the marker never sits behind text.
-          Below the marker the globe dissolves: a mask keeps it solid to 55% of the section (just under the marker and its
-          label) and fades it to nothing by 75%, so its lower quarter is invisible. The section's negative bottom margin
-          pulls the chapters up over that invisible quarter — 25% of the section height, i.e. 25% of (100vw * scale) per
-          breakpoint — but never above the first fold, since the deck sits just above it: the pull is the smaller of that
-          quarter and the section's overshoot past 100svh (section bottom = marker + half the height). max(0px, …) so a
-          globe that ends above the fold (very wide, short windows) never opens a gap. pointer-events-none so the
-          overlapped strip belongs to the chapters, not the globe. */}
-      <section className="pointer-events-none relative flex w-screen items-center justify-center mask-b-from-55% mask-b-to-75% h-[250vw] mt-[calc(var(--hero-marker)-125vw)] mb-[calc(-1*max(0px,min(62.5vw,var(--hero-marker)+125vw-100svh)))] md:h-[175vw] md:mt-[calc(var(--hero-marker)-87.5vw)] md:mb-[calc(-1*max(0px,min(43.75vw,var(--hero-marker)+87.5vw-100svh)))] lg:h-[100vw] lg:mt-[calc(var(--hero-marker)-50vw)] lg:mb-[calc(-1*max(0px,min(25vw,var(--hero-marker)+50vw-100svh)))]">
+          Below the marker the globe dissolves: a mask keeps it solid to 65% of the section (the marker, its label and the
+          first lines of the deck sit over solid linework) and fades it to nothing by 90%, so only its last tenth is
+          invisible. The section's negative bottom margin pulls the chapters up over that invisible tenth — 10% of the
+          section height, i.e. 10% of (100vw * scale) per breakpoint — but never closer than two --content-gap to the
+          first fold, since the deck sits just above it: the pull is the smaller of that tenth and the section's overshoot
+          past (100svh + 2 * --content-gap) (section bottom = marker + half the height). max(0px, …) so a globe that ends
+          above that line (very wide, short windows) never opens a gap. pointer-events-none so the overlapped strip
+          belongs to the chapters, not the globe. */}
+      <section className="pointer-events-none relative flex w-screen items-center justify-center mask-b-from-65% mask-b-to-90% h-[250vw] mt-[calc(var(--hero-marker)-125vw)] mb-[calc(-1*max(0px,min(25vw,var(--hero-marker)+125vw-100svh-2*var(--content-gap))))] md:h-[175vw] md:mt-[calc(var(--hero-marker)-87.5vw)] md:mb-[calc(-1*max(0px,min(17.5vw,var(--hero-marker)+87.5vw-100svh-2*var(--content-gap))))] lg:h-[100vw] lg:mt-[calc(var(--hero-marker)-50vw)] lg:mb-[calc(-1*max(0px,min(10vw,var(--hero-marker)+50vw-100svh-2*var(--content-gap))))]">
         <Globe geo={geo} />
       </section>
       {/* Two chapters, separated by whitespace alone — no rules. relative so the
