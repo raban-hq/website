@@ -68,11 +68,10 @@
   /* Where the globe's centre (the visitor's country marker) rests on the home
      page: in the band between the lede above and the deck below. 58% of the
      small viewport (svh: the phone's viewport with the address bar showing, so
-     nothing hides under it). From desktop up it is floored at 480px (see the
-     media query below): the 72px lede ends around 454px there, and in a short
-     laptop window 58% would land inside it. Phones get no floor — their lede
-     ends far higher, and on a short phone the floor would push the marker
-     into the deck instead. */
+     nothing hides under it). Deliberately no pixel floor: a floor tuned for a
+     short desktop window pushes the marker into the deck on a short phone or a
+     1024x768 laptop, while 58% lands in the band on every size checked
+     (1440x900, 1024x768, 768x1024, 375x812, 375x667). */
   --hero-marker: 58svh;
   /* The navbar is lifted off the page by a soft shadow, as if the light sits
      directly overhead. It reaches well down the page — a long, wide, very faint
@@ -275,15 +274,6 @@
     --h1: 48px;
     --h1-line: 56px;
     --h2: 24px;
-  }
-}
-
-/* The home globe's marker floor for desktop — see --hero-marker above. The
-   breakpoint matches Tailwind's lg, where the page's other hero geometry
-   (the globe's end scale) switches too. */
-@media (min-width: 1024px) {
-  :root {
-    --hero-marker: max(58svh, 480px);
   }
 }
 
