@@ -224,11 +224,11 @@ export function Navbar({ locale = "de" }: { locale?: Locale }) {
       // On a phone the bar hands its surface to whichever sheet is below it —
       // the navcard, or the section bar — so the two never stack into a doubled
       // frost with a seam at the divider. Same handover either way.
-      className={`relative z-20 flex h-[var(--nav-h)] touch-pinch-zoom items-center justify-between gap-[var(--gutter)] rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] bg-gradient-to-b from-paper/40 to-paper/15 px-[var(--gutter)] text-base shadow-[var(--lift),var(--edge-polish)] backdrop-blur-xl ${
-        menuOpen ? "max-sm:rounded-b-none max-sm:bg-none max-sm:shadow-none max-sm:backdrop-blur-none" : ""
+      className={`relative z-20 flex h-[var(--nav-h)] touch-pinch-zoom items-center justify-between gap-[var(--gutter)] rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] bg-gradient-to-b from-paper/40 to-paper/15 px-[var(--gutter)] text-base shadow-[var(--lift),var(--edge-polish)] frost ${
+        menuOpen ? "max-sm:rounded-b-none max-sm:bg-none max-sm:shadow-none max-sm:frost-none" : ""
       } ${
         hasSectionBar
-          ? "max-xl:rounded-b-none max-xl:bg-none max-xl:shadow-none max-xl:backdrop-blur-none"
+          ? "max-xl:rounded-b-none max-xl:bg-none max-xl:shadow-none max-xl:frost-none"
           : ""
       }`}
     >
@@ -361,7 +361,7 @@ export function Navbar({ locale = "de" }: { locale?: Locale }) {
               className="fixed inset-0 z-0 cursor-default bg-transparent"
             />
           )}
-          <div className="absolute inset-x-0 top-0 z-10 touch-pinch-zoom rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] bg-gradient-to-b from-paper/40 to-paper/15 px-[var(--gutter)] pt-[var(--nav-h)] text-base shadow-[var(--lift),var(--edge-polish)] backdrop-blur-xl">
+          <div className="absolute inset-x-0 top-0 z-10 touch-pinch-zoom rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] bg-gradient-to-b from-paper/40 to-paper/15 px-[var(--gutter)] pt-[var(--nav-h)] text-base shadow-[var(--lift),var(--edge-polish)] frost">
             {menuOpen && (
               // sm:hidden as well as the wrapper: the + that opens this is gone
               // above sm, so if the viewport widens while the card is open its

@@ -1,5 +1,27 @@
 @import "tailwindcss";
 
+/* The navbar's frost, written out by hand instead of `backdrop-blur-xl`.
+   Tailwind composes backdrop-filter from nine variables with empty fallbacks
+   — `-webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-
+   brightness,) …` — and macOS Safari drops that whole declaration, so the bar
+   had its tint and no blur: a WebKit bug, seen on Safari 16 through 18.6, and
+   tracked at tailwindlabs/tailwindcss#18765 (labelled "browser bug"). A
+   literal `blur(24px)` is what every report confirms works, so that is what
+   these write, in both the prefixed form Safari before 18 needs and the plain
+   one. 24px is Tailwind's --blur-xl, the step the bar used before; keep the
+   two in step if it ever changes. `frost-none` is the handover on a phone
+   (see app/components/navbar.tsx): the bar gives its surface to the sheet
+   below it, and both properties have to go together — leaving Tailwind's
+   `backdrop-blur-none` to do it would put the broken var() chain back. */
+@utility frost {
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+@utility frost-none {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
 :root {
   /* Every dimension below is a multiple of 8px — one grid for the whole app,
      so the chrome, the page gutter and the vertical rhythm all land on the
@@ -278,6 +300,28 @@ html, body {
    off the --h1/--h2 vars above. */
 body {
   font-size: 16px;
+}
+
+/* The navbar's frost on Safari older than 16.2. Tailwind v4 writes every
+   gradient with a colour-space clause — `linear-gradient(to bottom in oklab,
+   …)` — and, unlike its color-mix() and @property fallbacks, does NOT guard
+   it. A browser that doesn't know the clause throws the whole gradient away,
+   and Safari only learnt it in 16.2 (December 2022): on Big Sur and Catalina
+   Macs that never got past 15.6 or 16.1 the navbar had no background at all —
+   a bare blur over the page, so the bar wasn't there — while everything else
+   still worked, because Next's build already rewrites light-dark() and
+   Tailwind guards the rest. This hands those browsers the same gradient
+   without the clause; interpolating in sRGB instead of oklab is invisible on
+   a two-stop grey ramp. Unlayered on purpose: Tailwind's utilities sit in
+   @layer utilities, and an unlayered rule beats a layered one regardless of
+   order, so this wins where the guard fails and never applies where it holds.
+   (The frost's opacity stops still fall back to solid paper there, because
+   color-mix() is Safari 16.2 as well — Tailwind guards that one itself. A
+   solid bar on a browser below the framework's floor is the intended degrade.)
+   Only the -b direction is written because it's the only one in use; a new
+   direction needs its own line here. */
+@supports not (background-image: linear-gradient(in oklab, red, red)) {
+  .bg-gradient-to-b { --tw-gradient-position: to bottom; }
 }
 
 /* The pitch-deck charts (app/components/pitch/) are SVGs scaled to the full
