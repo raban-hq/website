@@ -49,7 +49,16 @@ export function OwnershipPricingChart({
 }) {
   const t = T[locale];
   return (
-    <svg viewBox="70 0 1540 610" className={`chart ${className}`} role="img" aria-label={t.aria}>
+    // overflow-visible: the outer hairline runs along y=0 and y=610, the exact
+    // edges of the viewBox, and with the .chart non-scaling-stroke its 2px
+    // centre-line straddles that edge — so the default clip shaved the outer
+    // half off and the bottom run rendered 1px against 2px everywhere else.
+    <svg
+      viewBox="70 0 1540 610"
+      className={`chart overflow-visible ${className}`}
+      role="img"
+      aria-label={t.aria}
+    >
       <rect x="140" y="20" width="640" height="310" rx="24" className="fill-red-600" />
       <text className="fill-on-accent" x="460" y="161" textAnchor="middle" fontSize="38">
         {t.yours}

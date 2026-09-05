@@ -103,8 +103,11 @@ export function LinkStyle({
     : block
       ? "-my-1 py-1"
       : `-mx-2 -my-1 px-2 py-1 ${touch}`;
+  // Medium weight for the chrome only: at the body's 400 the bar's words sat
+  // lighter than the page they frame, and 500 is the least that reads as a
+  // frame without turning the bar into a heading.
   const interaction = chrome
-    ? `${touch} hover:text-neutral-500 active:text-neutral-500`
+    ? `${touch} font-medium hover:text-neutral-500 active:text-neutral-500`
     : highlight
       ? `${box} rounded-lg ${bg}`
       : touch;
