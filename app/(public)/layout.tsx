@@ -17,9 +17,11 @@ export default async function PublicLayout({ children }: { children: React.React
     <div className="relative flex min-h-[100vh] flex-col bg-slab">
       {/* --page-lip is the card's own bottom edge, graded so the sheet reads as
           curving over the footer rather than being cut off at it. It's an inset,
-          so it belongs here on the card; its other half, --page-cast, is thrown
-          from the boundary element below — see globals.css for why the two are
-          split across two elements.
+          so it sits on the card and never reaches the footer. (History: an
+          outset cast — a white glow in light, a black shadow in dark — used to
+          be thrown onto the footer from a static boundary element that sat
+          here after <Footer />. It was removed: the smear over the footer read
+          as a stain rather than an edge. The lip is the whole edge now.)
           overflow-clip makes the card clip its descendants to that curve, which
           a border-radius alone does NOT do: the globe animates on a transform,
           so while it runs it sits on its own composited layer, and a composited
@@ -31,24 +33,7 @@ export default async function PublicLayout({ children }: { children: React.React
       <div className="grow overflow-clip rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] bg-paper shadow-[var(--page-lip)]">
         {children}
       </div>
-      {/* The boundary. The footer is the surface being cast onto, and the empty
-          div after it is what throws the cast: same width, same bottom radius as
-          the card, so the silhouette is identical, but STATIC — nothing inside
-          it animates, so it never joins a composited layer. That is the whole
-          reason it exists rather than the cast sitting on the card, where the
-          globe's animation re-rasterized it and flashed a square corner through
-          the notches (see --page-cast in globals.css).
-          Its own box covers the strip above the boundary, and an outer shadow is
-          clipped to outside the box it's thrown from — so the cast only ever
-          appears below the line and in the two corner notches, never smudged
-          upward over the paper. bottom-full pins it to the footer's top edge, so
-          it follows the footer's height without anything measuring it. It comes
-          after <Footer /> so it paints over the slab, and it must stay
-          pointer-events-none: it lies over the last 84px of the page. */}
-      <div className="relative">
-        <Footer locale={locale} />
-        <div className="pointer-events-none absolute inset-x-0 bottom-full h-[calc(var(--radius)*3)] rounded-b-[var(--radius)] [corner-shape:superellipse(1.5)] shadow-[var(--page-cast)]" />
-      </div>
+      <Footer locale={locale} />
     </div>
   );
 }

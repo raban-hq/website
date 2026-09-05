@@ -78,10 +78,8 @@
      cast rather than a tight band hugging the bar, which would read as a hard
      opaque object sitting flat on the paper. Glass scatters what little light
      it blocks, so the ink stays low even as the throw gets long — real glass
-     casts a hint, not a silhouette. It is one of the app's two
-     drop shadows — the other is --page-cast just below, where the page card
-     meets the slab. Those two edges are the whole list: cards and content
-     otherwise stay flat (see AGENTS.md).
+     casts a hint, not a silhouette. It is the app's ONLY drop shadow: cards
+     and content otherwise stay flat (see AGENTS.md).
      The geometry is the same in both themes and only the ink changes: dark paper
      swallows a 3% shadow completely, so the dark arm carries far more alpha to
      cast the same visible amount. Still black in BOTH arms — the navbar always
@@ -89,26 +87,18 @@
      polish below, not the shadow, that inverts. Don't put a light arm here. */
   --lift: 0 8px 20px light-dark(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.55));
   /* The page card's bottom edge: the SAME edge as the navbar's, one level
-     down. The lip (--page-lip) is the inset grade on the card itself and the
-     cast (--page-cast) is thrown from the static boundary element above the
-     footer (see app/(public)/layout.tsx for why the two are split across two
-     elements — the globe's animated layer can't be trusted with an outset
-     shadow).
-     The lip is a straight alias of the navbar's polish, so the two edges of
-     the paper can't drift apart: sand the navbar's lip and the card's follows.
-     The cast takes the navbar's GEOMETRY (--lift's 8px throw, 20px blur) but
-     not its ink, because it lands on the slab rather than on paper: in light
-     the slab is black, and a black shadow there is invisible by definition.
-     So the light arm carries the PAPER's colour — the sheet spilling a little
-     of its light onto the slab, the way --edge-polish inverts — and the dark
-     arm is --lift's own black at --lift's own alpha, an ordinary shadow on the
-     white slab. The two arms share one number on purpose: mirrored surfaces,
-     mirrored ink, and checked side by side they carry the same weight.
-     (History: before this the card had its own, heavier contact profile — a
-     0.24 inset grade and a tight two-layer glow. It was replaced to match the
-     navbar; keep the geometry here equal to --lift's.) */
+     down. It is an inset grade on the card itself — a straight alias of the
+     navbar's polish, so the two edges of the paper can't drift apart: sand
+     the navbar's lip and the card's follows. It stays inside the card, so it
+     never touches the footer below.
+     There is no outset cast to go with it. (History: a --page-cast token —
+     --lift's 8px/20px geometry, a white glow in light and a black shadow in
+     dark, thrown onto the slab from a static element above the footer — was
+     dropped because the smear over the footer read as a stain rather than an
+     edge. Before that the card had its own heavier contact profile, a 0.24
+     inset grade and a tight two-layer glow. Don't bring either back: the
+     card's edge is the navbar's lip, nothing more.) */
   --page-lip: var(--edge-polish);
-  --page-cast: 0 8px 20px light-dark(rgba(255, 255, 255, 0.55), rgba(0, 0, 0, 0.55));
   /* The navbar's bottom edge, polished. An INSET shadow, so unlike a gradient
      border it follows the corner radius instead of flattening it: the ink is
      densest at the very bottom and fades upward over ~3px, so the edge reads as
