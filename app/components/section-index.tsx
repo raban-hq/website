@@ -31,7 +31,15 @@ function lineOf(el: Element): number {
 // the affordance for proper buttons, and a column of thirteen boxes lighting up
 // under the cursor is chrome the page doesn't need. Same reason it isn't
 // LinkStyle's chrome mode either — that dims on hover, and here hover resolves.
-export function SectionIndex({ sections }: { sections: readonly Section[] }) {
+// `label` is the nav's accessible name, handed in by the page so it follows the
+// page's language; the default covers a caller that has only one.
+export function SectionIndex({
+  sections,
+  label = "On this page",
+}: {
+  sections: readonly Section[];
+  label?: string;
+}) {
   const [active, setActive] = useState(sections[0]?.id);
   // A clicked entry owns the highlight until the reader scrolls for themselves.
   // The last sections of a document can sit below the line and never reach it —
@@ -142,7 +150,7 @@ export function SectionIndex({ sections }: { sections: readonly Section[] }) {
 
   return (
     <nav
-      aria-label="On this page"
+      aria-label={label}
       // self-start, not stretch: a flex item stretched to the full column
       // height has nothing left to slide against and sticky would never bite.
       // 12px, the app's small size — the same step down the footer takes, for
