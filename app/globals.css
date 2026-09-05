@@ -55,53 +55,27 @@
      casts on paper, and a shadow is absence of light in either theme; it is the
      polish below, not the shadow, that inverts. Don't put a light arm here. */
   --lift: 0 8px 20px light-dark(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.55));
-  /* The page card's bottom edge, in two halves that are ONE effect: the lip on
-     the paper (--page-lip) and the cast onto the slab (--page-cast). They only
-     read as depth together and must be tuned together — the split is forced by
-     WHERE each has to be painted, not by them being separate ideas.
-     They live on different elements on purpose. The lip is an inset, so it goes
-     on the card. The cast used to as well, and that turned out to be the bug:
-     the globe animates on a transform, so while it runs the card holds a live
-     composited layer, and the card's own outset shadow is re-rasterized along
-     with it — an element's own box-shadow is the one thing its overflow can
-     never clip, so a square silhouette flashed through the corner notches at
-     the end of the animation. The cast is now thrown by a static, empty element
-     that sits above the footer (see app/(public)/layout.tsx), with the same
-     width and the same bottom radius, so the silhouette is identical and
-     nothing that animates is anywhere near it.
-     The cast is a GLOW, not a shadow. The slab is the ink, so in light the card
-     is white paper over BLACK and a black shadow there is invisible by
-     definition. What actually happens at that edge is the paper catching the
-     light and spilling a little of it onto the slab below — so the cast carries
-     the PAPER's colour and inverts with the theme the way --edge-polish does
-     (dark: a near-black card over a white slab, so the spill turns back into an
-     ordinary dark shadow). The lip inverts with it, and for the same reason.
-     Both are DELIBERATELY not faint. Unlike --lift, which shades white paper
-     and can afford 3% ink, this lands on the full-contrast slab and has to
-     carry a real boundary — two quiet versions (12–14px blur, ~0.2 alpha) were
-     built first and were invisible on a bright screen. The alphas are tuned per
-     ARM rather than shared: white spilling onto black and black falling onto
-     white do not read the same at the same number.
-     The PROFILE is the point: densest at the boundary, gone within ~20px. It
-     reads as the paper pressed up against a cloth from underneath — the
-     fabric is tightest right at the edge and relaxes fast — which is the
-     neumorphic way of saying the two surfaces are in contact rather than one
-     floating over the other. Two layers do it: a tight, strong core (1px down,
-     4px blur) that puts near-full ink on the first pixels below the edge, and a
-     short falloff (4px down, 16px blur) that carries it out and stops. No
-     negative spread and no long offset: an offset moves the peak AWAY from the
-     edge, which is exactly the inverse of this profile. (History: it was a
-     20px offset with a 40px blur and a -10px spread — a long throw whose peak
-     sat 20px below the boundary and whose edge was soft; it read as the card
-     hovering, and was rebuilt as this contact profile.)
-     A 16px blur sits under --radius, so the run is even end to end without
-     needing a negative spread to buy margin at the screen edges. The caster
-     element must still stay taller than 2*(radius) so its corner matches the
-     paper's. */
-  --page-lip: inset 0 -4px 8px -4px light-dark(rgba(0, 0, 0, 0.24), rgba(255, 255, 255, 0.24));
-  --page-cast:
-    0 1px 4px 0 light-dark(rgba(255, 255, 255, 0.80), rgba(0, 0, 0, 0.75)),
-    0 4px 16px 0 light-dark(rgba(255, 255, 255, 0.50), rgba(0, 0, 0, 0.60));
+  /* The page card's bottom edge: the SAME edge as the navbar's, one level
+     down. The lip (--page-lip) is the inset grade on the card itself and the
+     cast (--page-cast) is thrown from the static boundary element above the
+     footer (see app/(public)/layout.tsx for why the two are split across two
+     elements — the globe's animated layer can't be trusted with an outset
+     shadow).
+     The lip is a straight alias of the navbar's polish, so the two edges of
+     the paper can't drift apart: sand the navbar's lip and the card's follows.
+     The cast takes the navbar's GEOMETRY (--lift's 8px throw, 20px blur) but
+     not its ink, because it lands on the slab rather than on paper: in light
+     the slab is black, and a black shadow there is invisible by definition.
+     So the light arm carries the PAPER's colour — the sheet spilling a little
+     of its light onto the slab, the way --edge-polish inverts — and the dark
+     arm is --lift's own black at --lift's own alpha, an ordinary shadow on the
+     white slab. The two arms share one number on purpose: mirrored surfaces,
+     mirrored ink, and checked side by side they carry the same weight.
+     (History: before this the card had its own, heavier contact profile — a
+     0.24 inset grade and a tight two-layer glow. It was replaced to match the
+     navbar; keep the geometry here equal to --lift's.) */
+  --page-lip: var(--edge-polish);
+  --page-cast: 0 8px 20px light-dark(rgba(255, 255, 255, 0.55), rgba(0, 0, 0, 0.55));
   /* The navbar's bottom edge, polished. An INSET shadow, so unlike a gradient
      border it follows the corner radius instead of flattening it: the ink is
      densest at the very bottom and fades upward over ~3px, so the edge reads as
