@@ -13,7 +13,8 @@ import { LinkStyle } from "./link-style";
 // stays legible (that's legibility, not a second signal). Same 40×20 capsule
 // as the theme flip below it, so the two read as one family of controls.
 //
-// German is the default. The choice is a cookie, and router.refresh()
+// Until the visitor flips it, the language follows their browser's preference
+// (see utils/locale-server.ts). The choice is a cookie, and router.refresh()
 // re-renders the server components in the new language without touching the
 // URL. The knob is placed from the server-provided locale, so there is nothing
 // to correct after hydration.

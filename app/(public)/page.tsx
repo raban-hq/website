@@ -45,11 +45,11 @@ export default async function HomePage() {
     <main className="relative" style={{ display: "flow-root" }}>
       {/* inset-x gives the absolute box a real width (left+right gutter); without
           it the box shrink-wraps to the lede and the deck's wider max-w can't take
-          effect. From desktop up the box runs to the bottom of the first screen
-          (100vh minus its own top) so the deck can be pinned to its bottom-right
-          corner. Tablets and phones stay stacked — a 20ch lede and a readable
-          deck don't fit in one row at 768px. */}
-      <div className="absolute inset-x-[var(--gutter)] top-[var(--tagline-top)] z-10 lg:h-[calc(100vh-var(--tagline-top))]">
+          effect. The box runs to the bottom of the first screen (100svh minus its
+          own top) as a flex column: the lede sits at the top, the deck is pushed
+          to the bottom-right corner. min-h rather than h so that on a screen too
+          short for both the box grows and the deck simply follows the lede. */}
+      <div className="absolute inset-x-[var(--gutter)] top-[var(--tagline-top)] z-10 flex min-h-[calc(100svh-var(--tagline-top))] flex-col">
         {/* Lede: display type. Size follows the viewport (5vw) between 36px on
             a phone and 72px on a wide screen; extrabold with tight leading and
             negative tracking so it reads as one block, not as prose. Width is
@@ -60,30 +60,31 @@ export default async function HomePage() {
           {t.lede}
         </p>
         {/* Supporting deck: full ink at semibold, so it holds its own on the
-            first screen next to the extrabold lede. On phones it stays at body
-            size and full width so it ends above the globe's centre (see the
-            section below); from tablet up it steps up to 20px. From desktop up
-            it is pinned to the bottom-right corner of the first screen with a
-            measure of about 36 characters per line, set flush right so the
+            first screen next to the extrabold lede. Pinned to the bottom-right
+            corner of the first screen at every width — mt-auto pushes it down,
+            self-end pushes it right — with a measure of about 36 characters per
+            line (capped at the gutter box on phones), set flush right so the
             block has a straight edge on the gutter side and rags towards the
-            middle of the screen, mirroring the lede. It sits the same distance above the
-            fold (--tagline-top minus --nav-h) as the lede sits below the navbar,
-            so the two frame the screen top-left and bottom-right. Absolute
-            rather than a flex push so the placement holds regardless of the
-            lede's height. */}
-        <p className="mt-6 text-base font-semibold leading-[1.5] text-ink md:mt-8 md:max-w-[58ch] md:text-xl lg:absolute lg:right-0 lg:bottom-[calc(var(--tagline-top)-var(--nav-h))] lg:mt-0 lg:max-w-[36ch] lg:text-right">
+            middle of the screen, mirroring the lede. It ends --hero-bottom above
+            the fold, the same distance the lede sits below the navbar, so the two
+            frame the screen top-left and bottom-right. pt-6 keeps a minimum gap
+            to the lede when the box has to grow. Body size on phones, 20px from
+            tablet up. */}
+        <p className="mt-auto max-w-[min(100%,36ch)] self-end pt-6 text-right text-base font-semibold leading-[1.5] text-ink mb-[var(--hero-bottom)] md:text-xl">
           {t.deck}
         </p>
       </div>
       {/* height = 100vw * scale per breakpoint; scales must match getEndScale() in globe-map.tsx, else a gap appears above the footer.
-          The globe centre is where the visitor's own country marker lands (globe-map.tsx rotates by [-lng, -lat]), so it must
-          clear the lede and deck: it rests at 72vh, floored at 624px for short phones where the lede stacks past 72vh.
+          The globe centre is where the visitor's own country marker lands (globe-map.tsx rotates by [-lng, -lat]); it rests at
+          --hero-marker (app/globals.css), in the band between the lede and the deck, so the marker never sits behind text.
           Below the marker the globe dissolves: a mask keeps it solid to 55% of the section (just under the marker and its
           label) and fades it to nothing by 75%, so its lower quarter is invisible. The section's negative bottom margin
           pulls the chapters up over that invisible quarter — 25% of the section height, i.e. 25% of (100vw * scale) per
-          breakpoint — so the Problem chapter begins just under the first fold instead of a whole viewport later.
-          pointer-events-none so the overlapped strip belongs to the chapters, not the globe. */}
-      <section className="pointer-events-none relative flex w-screen items-center justify-center mask-b-from-55% mask-b-to-75% h-[250vw] mt-[calc(max(72vh,624px)-125vw)] mb-[-62.5vw] md:h-[175vw] md:mt-[calc(max(72vh,624px)-87.5vw)] md:mb-[-43.75vw] lg:h-[100vw] lg:mt-[calc(max(72vh,624px)-50vw)] lg:mb-[-25vw]">
+          breakpoint — but never above the first fold, since the deck sits just above it: the pull is the smaller of that
+          quarter and the section's overshoot past 100svh (section bottom = marker + half the height). max(0px, …) so a
+          globe that ends above the fold (very wide, short windows) never opens a gap. pointer-events-none so the
+          overlapped strip belongs to the chapters, not the globe. */}
+      <section className="pointer-events-none relative flex w-screen items-center justify-center mask-b-from-55% mask-b-to-75% h-[250vw] mt-[calc(var(--hero-marker)-125vw)] mb-[calc(-1*max(0px,min(62.5vw,var(--hero-marker)+125vw-100svh)))] md:h-[175vw] md:mt-[calc(var(--hero-marker)-87.5vw)] md:mb-[calc(-1*max(0px,min(43.75vw,var(--hero-marker)+87.5vw-100svh)))] lg:h-[100vw] lg:mt-[calc(var(--hero-marker)-50vw)] lg:mb-[calc(-1*max(0px,min(25vw,var(--hero-marker)+50vw-100svh)))]">
         <Globe geo={geo} />
       </section>
       {/* Two chapters, separated by whitespace alone — no rules. relative so the

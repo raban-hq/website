@@ -47,8 +47,9 @@ hellere Stufen als Deckkraft davon) und zeichnen ihre Linien mit
 `vector-effect: non-scaling-stroke` in festen 2px (eine 1px-Linie verschmiert,
 sobald sie nicht auf einem halben Pixel sitzt; 2px decken immer zwei ganze
 Pixel). Die Bilder der Team-Folie liegen in `app/assets/`. Die Seite ist
-zweisprachig: Deutsch ist Standard, Englisch schaltet die `D`/`E`-Kapsel in der
-Fußzeile über ein Cookie (`utils/locale.ts`, `utils/locale-server.ts`);
+zweisprachig: Ohne Cookie entscheidet die Browsersprache (`Accept-Language`:
+Deutsch oder Englisch, sonst Deutsch), die `D`/`E`-Kapsel in der Fußzeile
+schaltet über ein Cookie um (`utils/locale.ts`, `utils/locale-server.ts`);
 Navigation, Fußzeile, Seiten und Grafiken tragen ihre Texte als `de`/`en`-Paar
 direkt in der Datei. Die Kapitel der Startseite stehen `--content-gap`
 auseinander statt `--header-gap` — Grafiken in voller Breite brauchen mehr

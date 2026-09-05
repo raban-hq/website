@@ -3,12 +3,20 @@
 import { useState } from "react";
 
 import { LinkStyle } from "@/app/components/link-style";
+import type { Locale } from "@/utils/locale";
 
 // TODO before launch: this mailbox has to actually exist and be monitored.
 // Deliberately NOT a founder's personal address — a company address only.
 const ADDRESS = "kontakt@raban.ai";
 
-export function ContactCard() {
+// The card's own words — the label and the copy button's accessible name.
+const T = {
+  de: { email: "E-Mail", copy: "E-Mail-Adresse kopieren", copied: "Kopiert" },
+  en: { email: "Email", copy: "Copy email address", copied: "Copied" },
+} as const;
+
+export function ContactCard({ locale = "de" }: { locale?: Locale }) {
+  const t = T[locale];
   const [copied, setCopied] = useState(false);
 
   async function copy() {
@@ -27,12 +35,12 @@ export function ContactCard() {
       {/* Header row: label left, copy action right — same shape as the canonical
           card (carried over from the source project). */}
       <div className="flex h-4 items-center justify-between">
-        <span className="[text-box:trim-both_cap_alphabetic]">Email</span>
+        <span className="[text-box:trim-both_cap_alphabetic]">{t.email}</span>
         <LinkStyle icon>
           <button
             type="button"
             onClick={copy}
-            aria-label={copied ? "Copied" : "Copy email address"}
+            aria-label={copied ? t.copied : t.copy}
             className="cursor-pointer"
           >
             {copied ? (
