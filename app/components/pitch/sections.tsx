@@ -6,7 +6,8 @@ import { OwnershipPricingChart } from "./ownership-pricing";
 import { VerificationLoopChart } from "./verification-loop";
 
 // The pitch deck (Raban Pitch v2) as page sections, one per slide: a heading,
-// the slide's graphic spanning the full content width, and beneath it two or
+// the slide's graphic spanning the full content width (each chart brings its
+// own narrow layout for phones and tablets), and beneath it two or
 // three sentences of customer-facing copy — what a buyer needs from that slide,
 // condensed from the founders' spoken script and addressed to the reader.
 //
@@ -76,7 +77,7 @@ export function KnowledgeLivesSection({ locale, level }: Props) {
   return (
     <section className="space-y-[var(--header-gap)]">
       <Title level={level}>{t.title}</Title>
-      <KnowledgeLivesChart className="w-full" locale={locale} />
+      <KnowledgeLivesChart locale={locale} />
       <p className={PARA}>{t.para}</p>
     </section>
   );
@@ -87,7 +88,7 @@ export function FlowSection({ locale, level }: Props) {
   return (
     <section className="space-y-[var(--header-gap)]">
       <Title level={level}>{t.title}</Title>
-      <KnowledgeFlowChart className="w-full" locale={locale} />
+      <KnowledgeFlowChart locale={locale} />
       <p className={PARA}>{t.para}</p>
     </section>
   );
@@ -98,7 +99,7 @@ export function LoopSection({ locale, level }: Props) {
   return (
     <section className="space-y-[var(--header-gap)]">
       <Title level={level}>{t.title}</Title>
-      <VerificationLoopChart className="w-full" locale={locale} />
+      <VerificationLoopChart locale={locale} />
       <p className={PARA}>{t.para}</p>
     </section>
   );
@@ -109,7 +110,7 @@ export function PricingSection({ locale, level }: Props) {
   return (
     <section className="space-y-[var(--header-gap)]">
       <Title level={level}>{t.title}</Title>
-      <OwnershipPricingChart className="w-full" locale={locale} />
+      <OwnershipPricingChart locale={locale} />
       <p className={PARA}>{t.para}</p>
     </section>
   );

@@ -336,7 +336,8 @@ body {
 }
 
 /* The pitch-deck charts (app/components/pitch/) are SVGs scaled to the full
-   content width, so a 2-unit stroke lands on fractional device pixels and
+   content width (each in two layouts, the slide above lg and a narrow
+   stacked one below it), so a 2-unit stroke lands on fractional device pixels and
    the anti-aliasing renders a vertical edge lighter than a horizontal one.
    non-scaling-stroke keeps every stroke at its declared PIXEL width whatever
    the scale — 2px lines, 1px hairlines, the way the deck drew them at 1:1 —
@@ -345,3 +346,4 @@ body {
 .chart :is(path, line, rect, circle, ellipse, polyline, polygon) {
   vector-effect: non-scaling-stroke;
 }
+

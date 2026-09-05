@@ -46,7 +46,12 @@ SVG-Grafiken sind auf die Farb-Tokens der Seite portiert (Akzent = `red-600`,
 hellere Stufen als Deckkraft davon) und zeichnen ihre Linien mit
 `vector-effect: non-scaling-stroke` in festen 2px (eine 1px-Linie verschmiert,
 sobald sie nicht auf einem halben Pixel sitzt; 2px decken immer zwei ganze
-Pixel). Die Bilder der Team-Folie liegen in `app/assets/`. Die Seite ist
+Pixel). Jede Grafik hat zwei Layouts: die Folie (ab `lg`) und eine schmale
+Fassung für Handy und Tablet, die dieselben Teile in gleicher Größe
+untereinander stapelt — ein SVG skaliert als ein Bild, die Folie allein würde
+auf dem Handy samt Beschriftung auf ein Fünftel schrumpfen. Beide Fassungen
+teilen sich die gezeichneten Bauteile; nur die Anordnung (und bei der
+Verifikationsschleife: eine Vierteldrehung) unterscheidet sich. Die Bilder der Team-Folie liegen in `app/assets/`. Die Seite ist
 zweisprachig: Ohne Cookie entscheidet die Browsersprache (`Accept-Language`:
 Deutsch oder Englisch, sonst Deutsch), die `D`/`E`-Kapsel in der Fußzeile
 schaltet über ein Cookie um (`utils/locale.ts`, `utils/locale-server.ts`);
