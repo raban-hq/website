@@ -15,8 +15,10 @@ function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-// Breakpoints/scales must match the section height & margin in app/page.tsx
-// (section height = 100vw * scale); a mismatch leaves a gap above the footer.
+// Breakpoints/scales must match the section height & margins in
+// app/(public)/page.tsx (section height = 100vw * scale; its negative bottom
+// margin is 25% of that); a mismatch leaves a gap above the footer or lets the
+// chapters overlap the visible part of the globe.
 function getEndScale() {
   if (typeof window === "undefined") return 1;
   const w = window.innerWidth;
