@@ -75,12 +75,14 @@ export function ThemeFlip({ locale = "de" }: { locale?: Locale }) {
           aria-hidden="true"
           className="relative block h-8 w-16 rounded-full border border-current/40"
         >
-          {/* The knob sits 3px inside the 32px track (a 26px dot with 3px of air
-              all round) and travels the 30px between the two ends: left for
-              light, right for dark. The transition is the exception to the
-              app's no-transition rule and earns it — a switch whose knob
-              teleports reads as a repaint rather than a mechanism. */}
-          <span className="absolute left-[3px] top-[3px] size-[26px] rounded-full bg-current transition-transform duration-150 ease-out dark:translate-x-[30px]" />
+          {/* The knob sits 3px inside the track (a 24px dot with 3px of air all
+              round: the capsule is 32px tall but its inside, past the 1px
+              border, is 30px — and `top` counts from there) and travels the
+              32px between the two ends: left for light, right for dark. The
+              transition is the exception to the app's no-transition rule and
+              earns it — a switch whose knob teleports reads as a repaint rather
+              than a mechanism. */}
+          <span className="absolute left-[3px] top-[3px] size-[24px] rounded-full bg-current transition-transform duration-150 ease-out dark:translate-x-[32px]" />
         </span>
         {/* The accessible name, swapped by the same variant that moves the knob.
             display:none takes the inactive one out of the accessibility tree, so

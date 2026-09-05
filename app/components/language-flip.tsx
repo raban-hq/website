@@ -34,15 +34,15 @@ export function LanguageFlip({ locale }: { locale: Locale }) {
   return (
     <LinkStyle tone="light" icon highlight={false}>
       <button type="button" onClick={flip} className="cursor-pointer">
-        {/* 64×32 capsule (inside the 1px border: 62×30); the knob is 25×26
-            with 3px of air, and it travels 31px — exactly one half of the
-            inside — so it sits centred under either letter. */}
+        {/* 64×32 capsule (inside the 1px border: 62×30); the knob is 25×24
+            with 3px of air on every side, and it travels 31px — exactly one
+            half of the inside — so it sits centred under either letter. */}
         <span
           aria-hidden="true"
           className="relative flex h-8 w-16 items-center rounded-full border border-current/40 text-[12px] leading-none"
         >
           <span
-            className={`absolute left-[3px] top-[3px] h-[26px] w-[25px] rounded-full bg-current transition-transform duration-150 ease-out ${
+            className={`absolute left-[3px] top-[3px] h-[24px] w-[25px] rounded-full bg-current transition-transform duration-150 ease-out ${
               en ? "translate-x-[31px]" : ""
             }`}
           />
